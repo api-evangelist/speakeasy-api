@@ -1,0 +1,138 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Speakeasy
+providerId: speakeasy-api
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: true
+tags:
+- SDK Generation
+- Client Library
+- API Lifecycle
+- Developer Tools
+- Plans
+description: >-
+  Speakeasy prices SDK / CLI generation on a per-language license model. A Free
+  tier lets you generate one language with up to 250 operations at no cost. The
+  Business tier is licensed per language at 720 USD per month (600 USD per month
+  when billed annually) and adds OAuth, webhooks, SSE, and docsite integration.
+  Enterprise is custom-priced with dedicated support, SSO, audit logs, and SLAs.
+  An operation is a single GET / POST / PATCH / DELETE in your API interface, and
+  all SDKs generated for the same language share one operation limit. New accounts
+  receive a 14-day trial of the Business tier.
+notes: >-
+  Prices are grounded to the Speakeasy pricing page as of the review date (Free
+  $0; Business $720/mo, $600/mo annual, per language; Enterprise custom). MCP
+  server and AI Control Plane offerings are listed separately as Enterprise /
+  tailored pricing. Re-verify exact numbers on the pricing page during future
+  reconciliation.
+sources:
+- https://www.speakeasy.com/pricing
+- https://www.speakeasy.com/docs/sdks/introduction
+- https://www.speakeasy.com/docs/sdks/create-client-sdks
+plans:
+- id: speakeasy-free
+  name: Free
+  type: free
+  description: >-
+    Free-forever tier for generating a single language SDK with up to 250
+    operations. Includes one language license and community Slack support.
+  entries:
+  - label: Operations Per Language
+    name: free_operations
+    type: usage
+    metric: operations
+    limit: 250
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  - label: Language Licenses
+    name: free_languages
+    type: flat
+    metric: languages
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  elements:
+  - name: One Language SDK
+  - name: Up To 250 Operations
+  - name: Community Slack Support
+- id: speakeasy-business
+  name: Business
+  type: paid
+  description: >-
+    Per-language licensed tier. Each licensed language costs 720 USD per month
+    (600 USD per month billed annually) and can generate any number of SDKs in
+    that language, sharing one operation limit. Adds OAuth support, webhooks,
+    server-sent events, and docsite integration.
+  entries:
+  - label: Per Language License (Monthly)
+    name: business_language_monthly
+    type: flat
+    metric: language
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 720 USD per language per month
+    userMultiplied: false
+  - label: Per Language License (Annual)
+    name: business_language_annual
+    type: flat
+    metric: language
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 600 USD per language per month billed annually
+    userMultiplied: false
+  - label: Operations Per Language
+    name: business_operations
+    type: usage
+    metric: operations
+    limit: 250
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included per licensed language
+    userMultiplied: false
+  elements:
+  - name: OAuth 2.0 Support
+  - name: Webhooks
+  - name: Server-Sent Events
+  - name: Docsite Integration
+  - name: Any Number Of SDKs Per Licensed Language
+- id: speakeasy-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom-priced tier for larger teams and higher volume. Adds dedicated Slack
+    support, concierge onboarding, SLAs, SSO, audit logs, and customizable
+    requirements. The MCP / AI Control Plane offering is also Enterprise-tier.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Dedicated Slack Support
+  - name: Concierge Onboarding
+  - name: SLAs
+  - name: SSO
+  - name: Audit Logs
+  - name: Custom Requirements
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

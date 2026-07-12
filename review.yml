@@ -1,0 +1,140 @@
+aid: speakeasy-api
+name: Speakeasy
+review:
+  question: Does Speakeasy expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Speakeasy's own public HTTP surface (the
+    REST API at https://api.prod.speakeasy.com, described by a published OpenAPI
+    3.0.3 document at https://www.speakeasy.com/openapi.yaml) is entirely
+    request/response REST over HTTPS. There is no server-push transport
+    (WebSocket or SSE) on Speakeasy's own API to model. The one long-running
+    operation - async code-sample preview generation - is exposed as a polled
+    job (POST a job, then GET the job by ID), not a streamed connection.
+findings:
+  summary: |
+    Speakeasy does not publish a documented public WebSocket API. Speakeasy is an
+    API developer-experience platform whose primary interfaces are the Speakeasy
+    CLI, a GitHub Action, and the hosted web platform. Underneath those it also
+    operates a documented public REST API at https://api.prod.speakeasy.com,
+    described by a public OpenAPI 3.0.3 document (title "Speakeasy API", version
+    0.4.0) at https://www.speakeasy.com/openapi.yaml. That REST API is pure
+    request/response over HTTPS. Authentication is via an x-api-key workspace API
+    key, an x-workspace-identifier header, or a Bearer token. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented anywhere in the Speakeasy OpenAPI or docs as of the review date.
+  accessModel: |
+    Speakeasy is a developer-tool platform, not a hosted data API. Most day-to-day
+    use is through the open-source Speakeasy CLI (github.com/speakeasy-api/speakeasy,
+    installed via Homebrew/script/Winget/Chocolatey) and the Speakeasy GitHub
+    Action (github.com/speakeasy-api/sdk-generation-action), which read an OpenAPI
+    spec and generate/publish type-safe SDKs (client libraries), Terraform
+    providers, MCP servers, CLIs, contract tests, code samples, and docs. The REST
+    API at api.prod.speakeasy.com is the control plane those binaries call - it is
+    a real, documented public API (OpenAPI published), covering the artifact/API
+    registry, workspaces, organizations, schema store, code samples, generation
+    events, lint/change reports, GitHub automation, LLM OpenAPI suggestions,
+    publishing tokens, and event subscriptions. It is best understood as a
+    platform/registry API rather than a general-purpose runtime data API.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.prod.speakeasy.com
+      documented: true
+      note: Speakeasy API, OpenAPI 3.0.3 published at speakeasy.com/openapi.yaml. All request/response.
+    - protocol: OCI
+      scheme: https
+      baseURL: https://api.prod.speakeasy.com/v1/oci/v2
+      documented: true
+      note: OCI-compatible blob and manifest GET endpoints for pulling registry artifacts. Still request/response HTTPS.
+    - protocol: Async Job (polled)
+      scheme: https
+      documented: true
+      note: Code-sample preview async flow - POST /v1/code_sample/preview/async then GET /v1/code_sample/preview/async/{jobID}. Polled, not pushed.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the Speakeasy OpenAPI or docs as of the review date.
+  endpointsModeled:
+    - GET    https://api.prod.speakeasy.com/v1/artifacts/namespaces
+    - GET    https://api.prod.speakeasy.com/v1/artifacts/namespaces/{namespace_name}/revisions
+    - GET    https://api.prod.speakeasy.com/v1/artifacts/namespaces/{namespace_name}/tags
+    - POST   https://api.prod.speakeasy.com/v1/artifacts/namespaces/{namespace_name}/tags
+    - POST   https://api.prod.speakeasy.com/v1/artifacts/namespaces/{namespace_name}/visibility
+    - POST   https://api.prod.speakeasy.com/v1/artifacts/namespaces/{namespace_name}/archive
+    - POST   https://api.prod.speakeasy.com/v1/artifacts/preflight
+    - GET    https://api.prod.speakeasy.com/v1/artifacts/remote_sources
+    - POST   https://api.prod.speakeasy.com/v1/artifacts/remote_sources
+    - GET    https://api.prod.speakeasy.com/v1/oci/v2/{organization_slug}/{workspace_slug}/{namespace_name}/manifests/{revision_reference}
+    - GET    https://api.prod.speakeasy.com/v1/oci/v2/{organization_slug}/{workspace_slug}/{namespace_name}/blobs/{digest}
+    - GET    https://api.prod.speakeasy.com/v1/workspace
+    - POST   https://api.prod.speakeasy.com/v1/workspace
+    - GET    https://api.prod.speakeasy.com/v1/workspace/{workspace_id}
+    - GET    https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/settings
+    - PUT    https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/settings
+    - GET    https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/team
+    - GET    https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/tokens
+    - POST   https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/tokens
+    - GET    https://api.prod.speakeasy.com/v1/workspaces
+    - GET    https://api.prod.speakeasy.com/v1/organizations
+    - POST   https://api.prod.speakeasy.com/v1/organization
+    - GET    https://api.prod.speakeasy.com/v1/organization/usage
+    - GET    https://api.prod.speakeasy.com/v1/schema_store
+    - POST   https://api.prod.speakeasy.com/v1/schema_store
+    - GET    https://api.prod.speakeasy.com/v1/code_sample
+    - POST   https://api.prod.speakeasy.com/v1/code_sample/preview
+    - POST   https://api.prod.speakeasy.com/v1/code_sample/preview/async
+    - GET    https://api.prod.speakeasy.com/v1/code_sample/preview/async/{jobID}
+    - GET    https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/events
+    - POST   https://api.prod.speakeasy.com/v1/workspace/{workspace_id}/events
+    - POST   https://api.prod.speakeasy.com/v1/reports
+    - GET    https://api.prod.speakeasy.com/v1/reports/linting/{documentChecksum}
+    - GET    https://api.prod.speakeasy.com/v1/reports/changes/{documentChecksum}
+    - POST   https://api.prod.speakeasy.com/v1/github/trigger_action
+    - POST   https://api.prod.speakeasy.com/v1/suggest/openapi
+    - GET    https://api.prod.speakeasy.com/v1/auth/validate
+    - GET    https://api.prod.speakeasy.com/v1/user
+    - GET    https://api.prod.speakeasy.com/v1/publishing-tokens
+    - POST   https://api.prod.speakeasy.com/v1/publishing-tokens
+    - POST   https://api.prod.speakeasy.com/v1/subscriptions/{subscriptionID}/{namespaceName}/activate
+  endpointsModeledNote: |
+    The published Speakeasy OpenAPI (speakeasy.com/openapi.yaml) defines roughly
+    65 REST operations across Auth, Events, Reports, Github, Suggest, ShortURLs,
+    Workspaces, Organizations, CodeSamples, Artifacts, SchemaStore,
+    PublishingTokens, and Subscriptions. The list above is a representative subset;
+    the full set is captured verbatim in openapi/speakeasy-api-openapi.yaml, which
+    is copied directly from Speakeasy's published document (not hand-modeled).
+sources:
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: OpenAPI
+    note: Published Speakeasy API OpenAPI 3.0.3 (title "Speakeasy API", v0.4.0), server https://api.prod.speakeasy.com. All REST; no WebSocket.
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+    note: Platform docs - CLI, GitHub Action, SDK generation, Terraform, MCP, API registry.
+  - url: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
+    type: Documentation
+    note: API registry / artifacts workflow via CLI and API.
+  - url: https://github.com/speakeasy-api/speakeasy
+    type: SourceCode
+    note: Open-source Speakeasy CLI - the primary interface to the platform.
+  - url: https://github.com/speakeasy-api/sdk-generation-action
+    type: SourceCode
+    note: Speakeasy GitHub Action for SDK generation, release, and publishing.
+  - url: https://www.speakeasy.com/pricing
+    type: Pricing
+    note: Free, Business ($720/mo, $600/mo annual, per language), and custom Enterprise tiers.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Speakeasy's own public API is
+    request/response REST (the Speakeasy API at api.prod.speakeasy.com, with a
+    published OpenAPI document) plus OCI-compatible artifact retrieval and a polled
+    async job for code-sample previews. No AsyncAPI document was created because
+    there is no server-push transport on Speakeasy's own API to model. The bulk of
+    Speakeasy's value is delivered through the CLI and GitHub Action that generate
+    SDKs and Terraform providers locally/in CI, with the REST API acting as the
+    registry and control plane.

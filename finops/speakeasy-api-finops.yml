@@ -1,0 +1,91 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Speakeasy
+providerId: speakeasy-api
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- SDK Generation
+- Client Library
+- Developer Tools
+- API Lifecycle
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Speakeasy spend. Speakeasy is a developer-tool platform billed on
+  a per-language license model rather than on API request or data-transfer volume.
+  A Free tier covers one language and up to 250 operations at no cost. The Business
+  tier is a flat 720 USD per month per licensed language (600 USD per month billed
+  annually), and each licensed language may generate any number of SDKs sharing one
+  250-operation limit. Enterprise is custom-priced. The dominant cost drivers are
+  therefore the number of licensed languages and whether you exceed the per-language
+  operation allowance, not runtime API traffic.
+notes: >-
+  Business per-language pricing (720 USD/mo; 600 USD/mo annual) and the Free tier
+  (one language, 250 operations) are grounded to the pricing page as of the review
+  date. Enterprise and MCP / AI Control Plane pricing is custom. Verify current
+  rates on the Speakeasy pricing page during reconciliation.
+sources:
+- https://www.speakeasy.com/pricing
+- https://www.speakeasy.com/docs
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Speakeasy
+serviceCategory: Developer Tools and API Management
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+focusColumns:
+  ServiceName: Speakeasy SDK Generation
+  ServiceCategory: Developer Tools and API Management
+  ProviderName: Speakeasy
+  PublisherName: Speakeasy
+  InvoiceIssuerName: Speakeasy
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription-Based
+meters:
+- name: language_licenses
+  description: Number of languages licensed on the Business tier, billed 720 USD/mo each (600 USD/mo annual).
+  unit: languages
+  aggregation: sum
+  dimensions:
+  - account
+  - language
+- name: operations_per_language
+  description: API operations generated per licensed language; each language includes a 250-operation allowance.
+  unit: operations
+  aggregation: max
+  dimensions:
+  - account
+  - language
+- name: enterprise_contract
+  description: Custom Enterprise or MCP / AI Control Plane agreement, negotiated.
+  unit: contract
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track how many languages are licensed and how many operations each language's SDKs cover against the 250-operation allowance.
+- name: Allocation
+  description: Map language licenses to the product teams or public SDKs that depend on them.
+- name: Optimization
+  description: Consolidate SDKs within a licensed language (they share one operation limit) and prune unused operations from the OpenAPI spec to stay within allowances; use the Free tier for a single-language SDK.
+- name: Accountability
+  description: Assign an owner per licensed language and review monthly whether each license and its operation count is still justified.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

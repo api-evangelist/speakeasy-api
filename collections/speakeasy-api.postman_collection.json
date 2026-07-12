@@ -1,0 +1,263 @@
+{
+  "info": {
+    "name": "Speakeasy API",
+    "description": "The Speakeasy API (https://api.prod.speakeasy.com) is the control plane behind the Speakeasy SDK-generation platform, CLI, and GitHub Action. It covers the OpenAPI/artifact registry, workspaces, organizations, schema store, code samples, generation events, lint/change reports, GitHub automation, LLM OpenAPI suggestions, publishing tokens, and subscriptions. Authenticate with an x-api-key workspace key, an x-workspace-identifier header, or a Bearer token. Copied/curated from Speakeasy's published OpenAPI (speakeasy.com/openapi.yaml).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "x-api-key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.prod.speakeasy.com", "type": "string" },
+    { "key": "apiKey", "value": "", "type": "string" },
+    { "key": "workspace_id", "value": "", "type": "string" },
+    { "key": "namespace_name", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Artifacts (API Registry)",
+      "item": [
+        {
+          "name": "List namespaces",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/artifacts/namespaces", "host": ["{{baseUrl}}"], "path": ["v1", "artifacts", "namespaces"] },
+            "description": "Lists all Registry namespaces in the workspace."
+          }
+        },
+        {
+          "name": "Get namespace revisions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/artifacts/namespaces/{{namespace_name}}/revisions", "host": ["{{baseUrl}}"], "path": ["v1", "artifacts", "namespaces", "{{namespace_name}}", "revisions"] },
+            "description": "Lists revisions for a namespace."
+          }
+        },
+        {
+          "name": "Get namespace tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/artifacts/namespaces/{{namespace_name}}/tags", "host": ["{{baseUrl}}"], "path": ["v1", "artifacts", "namespaces", "{{namespace_name}}", "tags"] },
+            "description": "Lists tags for a namespace."
+          }
+        },
+        {
+          "name": "Set namespace visibility",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"visibility\": \"public\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/artifacts/namespaces/{{namespace_name}}/visibility", "host": ["{{baseUrl}}"], "path": ["v1", "artifacts", "namespaces", "{{namespace_name}}", "visibility"] },
+            "description": "Sets the visibility of a namespace."
+          }
+        },
+        {
+          "name": "Preflight",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/v1/artifacts/preflight", "host": ["{{baseUrl}}"], "path": ["v1", "artifacts", "preflight"] },
+            "description": "Runs a preflight check before pushing an artifact."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workspaces",
+      "item": [
+        {
+          "name": "List workspaces",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/workspaces", "host": ["{{baseUrl}}"], "path": ["v1", "workspaces"] },
+            "description": "Lists workspaces accessible to the caller."
+          }
+        },
+        {
+          "name": "Get workspace by context",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/workspace", "host": ["{{baseUrl}}"], "path": ["v1", "workspace"] },
+            "description": "Gets the workspace resolved from the auth context."
+          }
+        },
+        {
+          "name": "Get workspace settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/workspace/{{workspace_id}}/settings", "host": ["{{baseUrl}}"], "path": ["v1", "workspace", "{{workspace_id}}", "settings"] },
+            "description": "Gets settings for a workspace."
+          }
+        },
+        {
+          "name": "Create workspace token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"ci-token\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/workspace/{{workspace_id}}/tokens", "host": ["{{baseUrl}}"], "path": ["v1", "workspace", "{{workspace_id}}", "tokens"] },
+            "description": "Creates an API token for a workspace."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "List organizations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/organizations", "host": ["{{baseUrl}}"], "path": ["v1", "organizations"] },
+            "description": "Lists organizations for the caller."
+          }
+        },
+        {
+          "name": "Get organization usage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/organization/usage", "host": ["{{baseUrl}}"], "path": ["v1", "organization", "usage"] },
+            "description": "Gets usage for the organization."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schema Store",
+      "item": [
+        {
+          "name": "Get schema store item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/schema_store", "host": ["{{baseUrl}}"], "path": ["v1", "schema_store"] },
+            "description": "Retrieves a stored OpenAPI specification."
+          }
+        },
+        {
+          "name": "Create schema store item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"packageName\": \"my-sdk\",\n  \"sdkClassName\": \"MySDK\",\n  \"schema\": \"openapi: 3.0.3\\ninfo:\\n  title: My API\"\n}" },
+            "url": { "raw": "{{baseUrl}}/v1/schema_store", "host": ["{{baseUrl}}"], "path": ["v1", "schema_store"] },
+            "description": "Stores an OpenAPI specification in JSON or YAML."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Code Samples",
+      "item": [
+        {
+          "name": "Get code samples",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/code_sample", "host": ["{{baseUrl}}"], "path": ["v1", "code_sample"] },
+            "description": "Retrieves generated SDK usage snippets."
+          }
+        },
+        {
+          "name": "Generate code sample preview",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/v1/code_sample/preview", "host": ["{{baseUrl}}"], "path": ["v1", "code_sample", "preview"] },
+            "description": "Generates a synchronous code-sample preview from an OpenAPI operation."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Get linting report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/reports/linting/:documentChecksum", "host": ["{{baseUrl}}"], "path": ["v1", "reports", "linting", ":documentChecksum"] },
+            "description": "Gets a signed URL for an OpenAPI lint report by document checksum."
+          }
+        },
+        {
+          "name": "Get changes report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/reports/changes/:documentChecksum", "host": ["{{baseUrl}}"], "path": ["v1", "reports", "changes", ":documentChecksum"] },
+            "description": "Gets a signed URL for an OpenAPI change/diff report by document checksum."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Suggest (OpenAPI AI)",
+      "item": [
+        {
+          "name": "Suggest OpenAPI improvements",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/v1/suggest/openapi", "host": ["{{baseUrl}}"], "path": ["v1", "suggest", "openapi"] },
+            "description": "Returns LLM-generated suggestions to improve an OpenAPI document."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Validate API key",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/auth/validate", "host": ["{{baseUrl}}"], "path": ["v1", "auth", "validate"] },
+            "description": "Validates the workspace API key."
+          }
+        },
+        {
+          "name": "Get user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/user", "host": ["{{baseUrl}}"], "path": ["v1", "user"] },
+            "description": "Returns the authenticated user."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Publishing Tokens",
+      "item": [
+        {
+          "name": "List publishing tokens",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/v1/publishing-tokens", "host": ["{{baseUrl}}"], "path": ["v1", "publishing-tokens"] },
+            "description": "Lists publishing tokens used to publish SDKs to package registries."
+          }
+        }
+      ]
+    }
+  ]
+}

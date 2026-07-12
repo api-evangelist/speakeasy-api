@@ -1,0 +1,62 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Speakeasy
+providerId: speakeasy-api
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- SDK Generation
+- Developer Tools
+- API Lifecycle
+- Rate Limiting
+- Quotas
+description: >-
+  Speakeasy does not publish fixed numeric per-endpoint rate limits for its public
+  REST API (https://api.prod.speakeasy.com). In practice the platform's economic
+  limit is the plan's per-language operation allowance (250 operations per licensed
+  language) rather than a per-minute request cap, because the API is a control
+  plane for SDK generation rather than a high-volume runtime data API. Generation
+  itself is bounded by CLI / GitHub Action execution and the size of your OpenAPI
+  document, not by an API request quota.
+notes: >-
+  No numeric per-account or per-endpoint request-rate limit is documented as of the
+  review date. The meaningful quota is per-language operations (see plans). Clients
+  of the REST API should still implement retries with exponential backoff and honor
+  Retry-After on any 429 response.
+sources:
+- https://www.speakeasy.com/openapi.yaml
+- https://www.speakeasy.com/docs
+- https://www.speakeasy.com/pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: REST API Requests
+  scope: workspace
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the Speakeasy API.
+- name: Operations Per Language
+  scope: account
+  metric: operations
+  limit: 250 per licensed language (Free and Business)
+  notes: The primary economic quota; an operation is one GET/POST/PATCH/DELETE in your API interface.
+- name: Language Licenses
+  scope: account
+  metric: languages
+  limit: 1 on Free; per-license on Business
+  notes: Each licensed language may generate unlimited SDKs sharing one operation limit.
+- name: Code Sample Preview (Async)
+  scope: workspace
+  metric: jobs
+  limit: not published
+  notes: Long code-sample previews use a polled async job (POST then GET by jobID); no documented concurrency cap.
+policies:
+- name: Backoff Strategy
+  description: Clients of the Speakeasy API should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+- name: Operation-Based Metering
+  description: Cost and quota scale with the number of API operations generated per language, not with API request volume.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

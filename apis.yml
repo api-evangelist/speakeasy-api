@@ -1,0 +1,337 @@
+aid: speakeasy-api
+url: https://raw.githubusercontent.com/api-evangelist/speakeasy-api/refs/heads/main/apis.yml
+name: Speakeasy
+kind: company
+description: Speakeasy is an API developer-experience platform that generates production-ready,
+  type-safe SDKs (client libraries), Terraform providers, MCP servers, CLIs, code
+  samples, and docs from an OpenAPI specification. The primary interface is the
+  Speakeasy CLI plus GitHub Actions and the hosted platform, but Speakeasy also
+  exposes a documented public REST API at https://api.prod.speakeasy.com that backs
+  the CLI and platform - covering the OpenAPI/artifact registry, workspaces and
+  organizations, schema store, code samples, generation events, lint/change reports,
+  GitHub automation, LLM-powered OpenAPI suggestions, and SDK publishing tokens. It
+  is OpenAPI-native with no proprietary DSL, targeting API design, API lifecycle,
+  and SDK/client-library generation use cases.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- API Lifecycle
+- SDK Generation
+- Client Library
+- API Design
+- Developer Tools
+- OpenAPI
+- Code Generation
+- Terraform
+- MCP
+- Developer Experience
+created: '2026-07-11'
+modified: '2026-07-11'
+specificationVersion: '0.19'
+apis:
+- aid: speakeasy-api:speakeasy-api-registry-artifacts-api
+  name: Speakeasy API Registry (Artifacts) API
+  tags:
+  - API Registry
+  - Artifacts
+  - OpenAPI
+  - OCI
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Manage versioned Registry artifacts - list namespaces, list revisions
+    and tags, set visibility, archive namespaces, run preflight checks, and register
+    remote sources. Includes OCI-compatible blob and manifest retrieval so OpenAPI
+    specs and generated SDK artifacts can be pulled like container images.
+- aid: speakeasy-api:speakeasy-api-workspaces-api
+  name: Speakeasy Workspaces API
+  tags:
+  - Workspaces
+  - Tenancy
+  - Teams
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Create and manage Speakeasy workspaces (the tenancy that owns SDK
+    targets and generation config) - read and update workspace details and settings,
+    manage the team and per-user access, issue and revoke workspace tokens, and read
+    or set feature flags.
+- aid: speakeasy-api:speakeasy-api-organizations-api
+  name: Speakeasy Organizations API
+  tags:
+  - Organizations
+  - Billing
+  - Usage
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Manage organizations - the top-level tenancy above workspaces. Create
+    organizations, read organization details and usage, start a free trial, and add
+    or remove billing add-ons.
+- aid: speakeasy-api:speakeasy-api-schema-store-api
+  name: Speakeasy Schema Store API
+  tags:
+  - Schema Store
+  - OpenAPI
+  - API Design
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Store and retrieve OpenAPI specifications in the schema store, in JSON
+    or YAML, keyed by package name and SDK class name - the backing store used when
+    turning a spec into a shareable, generatable API definition.
+- aid: speakeasy-api:speakeasy-api-code-samples-api
+  name: Speakeasy Code Samples API
+  tags:
+  - Code Samples
+  - Client Library
+  - SDK Generation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs/sdks/create-client-sdks
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs/sdks/create-client-sdks
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Retrieve and preview usage snippets generated from a Speakeasy SDK -
+    per-operation client-library code samples in each generated language. Supports
+    synchronous previews and an async job flow for generating sample code from an
+    OpenAPI operation.
+- aid: speakeasy-api:speakeasy-api-generation-events-api
+  name: Speakeasy Generation Events API
+  tags:
+  - Events
+  - SDK Generation
+  - CI/CD
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Record and search the events captured by a Speakeasy binary (the CLI
+    and GitHub Action) - each SDK generation, publish, and lint run reported per
+    workspace and per generation target, giving an audit trail of the SDK lifecycle.
+- aid: speakeasy-api:speakeasy-api-reports-api
+  name: Speakeasy Reports API
+  tags:
+  - Reports
+  - Linting
+  - API Design
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs/prep-openapi/linting
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs/prep-openapi/linting
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Upload and retrieve reports produced during API design and generation -
+    OpenAPI lint reports and change (diff) reports - returned as signed URLs keyed by
+    document checksum, supporting API governance and safe spec evolution.
+- aid: speakeasy-api:speakeasy-api-github-automation-api
+  name: Speakeasy GitHub Automation API
+  tags:
+  - GitHub
+  - Automation
+  - Publishing
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Drive the Speakeasy GitHub integration - check repository access,
+    configure generation targets and code-sample or Mintlify docs repos, store
+    publishing secrets, trigger the Speakeasy GitHub Action, and inspect publishing
+    pull requests for automated SDK release.
+- aid: speakeasy-api:speakeasy-api-suggest-api
+  name: Speakeasy Suggest (OpenAPI AI) API
+  tags:
+  - AI
+  - API Design
+  - OpenAPI
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: LLM-powered OpenAPI improvement suggestions - propose fixes and
+    enhancements to an OpenAPI document (naming, structure, descriptions) either from
+    a full spec, a summary, or a registered registry revision, to raise API design
+    quality before SDK generation.
+- aid: speakeasy-api:speakeasy-api-auth-api
+  name: Speakeasy Auth API
+  tags:
+  - Authentication
+  - Access Tokens
+  - Identity
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Exchange and validate credentials - get a short-lived access token,
+    validate a workspace API key, read the authenticated user, and check workspace
+    access. Requests use an x-api-key workspace key, an x-workspace-identifier, or a
+    Bearer token.
+- aid: speakeasy-api:speakeasy-api-publishing-tokens-api
+  name: Speakeasy Publishing Tokens API
+  tags:
+  - Publishing
+  - Tokens
+  - SDK Generation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Create, read, update expiration, and delete publishing tokens used to
+    publish generated SDKs to package registries, plus read a token's public metadata
+    and its target.
+- aid: speakeasy-api:speakeasy-api-subscriptions-api
+  name: Speakeasy Subscriptions API
+  tags:
+  - Subscriptions
+  - Notifications
+  - Registry
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.speakeasy.com/docs
+  baseURL: https://api.prod.speakeasy.com
+  properties:
+  - url: https://www.speakeasy.com/docs
+    type: Documentation
+  - url: https://www.speakeasy.com/openapi.yaml
+    type: APIReference
+  - url: openapi/speakeasy-api-openapi.yaml
+    type: OpenAPI
+  - url: collections/speakeasy-api.postman_collection.json
+    type: PostmanCollection
+  - url: collections/speakeasy-api.opencollection.json
+    type: OpenCollection
+  description: Manage subscriptions to CLI and registry events - activate or ignore a
+    subscription for a given registry namespace so teams are notified when a tracked
+    OpenAPI spec or artifact changes.
+common:
+- type: Authentication
+  url: authentication/speakeasy-api-authentication.yml
+- type: DomainSecurity
+  url: security/speakeasy-api-domain-security.yml
+- type: GitHubOrganization
+  url: https://github.com/speakeasy-api
+- type: LinkedIn
+  url: https://www.linkedin.com/company/speakeasyapi
+- type: Website
+  url: https://www.speakeasy.com
+- type: Documentation
+  url: https://www.speakeasy.com/docs
+- type: Plans
+  url: plans/speakeasy-api-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/speakeasy-api-rate-limits.yml
+- type: FinOps
+  url: finops/speakeasy-api-finops.yml
+- url: https://www.speakeasy.com/blog
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

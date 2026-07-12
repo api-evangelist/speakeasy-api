@@ -1,0 +1,195 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": { "key": "x-api-key", "value": "{{apiKey}}", "in": "header" }
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Artifacts (API Registry)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List namespaces.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/artifacts/namespaces" },
+          "docs": "Lists all Registry namespaces in the workspace."
+        },
+        {
+          "info": { "name": "Get namespace revisions.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/artifacts/namespaces/:namespace_name/revisions",
+            "params": [{ "name": "namespace_name", "value": "", "type": "path", "description": "The namespace name." }]
+          },
+          "docs": "Lists revisions for a namespace."
+        },
+        {
+          "info": { "name": "Get namespace tags.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/artifacts/namespaces/:namespace_name/tags",
+            "params": [{ "name": "namespace_name", "value": "", "type": "path", "description": "The namespace name." }]
+          },
+          "docs": "Lists tags for a namespace."
+        },
+        {
+          "info": { "name": "Set namespace visibility.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/artifacts/namespaces/:namespace_name/visibility",
+            "body": { "type": "json", "data": "{\"visibility\":\"public\"}" }
+          },
+          "docs": "Sets the visibility of a namespace."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Workspaces", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List workspaces.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/workspaces" },
+          "docs": "Lists workspaces accessible to the caller."
+        },
+        {
+          "info": { "name": "Get workspace settings.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/settings",
+            "params": [{ "name": "workspace_id", "value": "", "type": "path", "description": "The workspace ID." }]
+          },
+          "docs": "Gets settings for a workspace."
+        },
+        {
+          "info": { "name": "Create workspace token.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/tokens",
+            "body": { "type": "json", "data": "{\"name\":\"ci-token\"}" }
+          },
+          "docs": "Creates an API token for a workspace."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Organizations", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List organizations.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/organizations" },
+          "docs": "Lists organizations for the caller."
+        },
+        {
+          "info": { "name": "Get organization usage.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/organization/usage" },
+          "docs": "Gets usage for the organization."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Schema Store", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get schema store item.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/schema_store" },
+          "docs": "Retrieves a stored OpenAPI specification."
+        },
+        {
+          "info": { "name": "Create schema store item.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/schema_store",
+            "body": { "type": "json", "data": "{\"packageName\":\"my-sdk\",\"sdkClassName\":\"MySDK\",\"schema\":\"openapi: 3.0.3\"}" }
+          },
+          "docs": "Stores an OpenAPI specification in JSON or YAML."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Code Samples", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get code samples.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/code_sample" },
+          "docs": "Retrieves generated SDK usage snippets."
+        },
+        {
+          "info": { "name": "Generate code sample preview.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/code_sample/preview",
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Generates a synchronous code-sample preview from an OpenAPI operation."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Reports", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get linting report.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/reports/linting/:documentChecksum",
+            "params": [{ "name": "documentChecksum", "value": "", "type": "path", "description": "Checksum of the OpenAPI document." }]
+          },
+          "docs": "Gets a signed URL for an OpenAPI lint report."
+        },
+        {
+          "info": { "name": "Get changes report.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/reports/changes/:documentChecksum",
+            "params": [{ "name": "documentChecksum", "value": "", "type": "path", "description": "Checksum of the OpenAPI document." }]
+          },
+          "docs": "Gets a signed URL for an OpenAPI change/diff report."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Suggest (OpenAPI AI)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Suggest OpenAPI improvements.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/suggest/openapi",
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Returns LLM-generated suggestions to improve an OpenAPI document."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Auth", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Validate API key.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/auth/validate" },
+          "docs": "Validates the workspace API key."
+        },
+        {
+          "info": { "name": "Get user.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/user" },
+          "docs": "Returns the authenticated user."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Publishing Tokens", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List publishing tokens.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.prod.speakeasy.com/v1/publishing-tokens" },
+          "docs": "Lists publishing tokens used to publish SDKs to package registries."
+        }
+      ]
+    }
+  ]
+}
