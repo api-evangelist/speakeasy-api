@@ -312,6 +312,8 @@ apis:
     subscription for a given registry namespace so teams are notified when a tracked
     OpenAPI spec or artifact changes.
 common:
+- type: AgenticAccess
+  url: agentic-access/speakeasy-api-agentic-access.yml
 - type: Authentication
   url: authentication/speakeasy-api-authentication.yml
 - type: DomainSecurity
