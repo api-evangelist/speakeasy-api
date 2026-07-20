@@ -23,7 +23,7 @@ schemes:
 - name: Bearer
   type: http
   scheme: bearer
-  description: 'A Bearer token for the workspace, passed as Authorization: Bearer YOUR_TOKEN.'
+  description: 'A Bearer token for the workspace, passed as Authorization: Bearer [example key]'
   sources:
   - openapi/speakeasy-api-openapi.yaml
 notes: >-
