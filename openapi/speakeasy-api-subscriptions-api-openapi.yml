@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Subscriptions API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- name: Subscriptions
+  description: REST APIs for managing subscriptions
+paths:
+  /v1/subscriptions/{subscriptionID}/{namespaceName}/ignore:
+    post:
+      operationId: ignoreSubscriptionNamespace
+      parameters:
+      - description: The existing subscription ID
+        in: path
+        name: subscriptionID
+        required: true
+        schema:
+          type: string
+      - description: The namespace name
+        in: path
+        name: namespaceName
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      summary: Ignored a namespace for a subscription
+      tags:
+      - Subscriptions
+  /v1/subscriptions/{subscriptionID}/{namespaceName}/activate:
+    post:
+      operationId: activateSubscriptionNamespace
+      parameters:
+      - description: The existing subscription ID
+        in: path
+        name: subscriptionID
+        required: true
+        schema:
+          type: string
+      - description: The namespace name
+        in: path
+        name: namespaceName
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      summary: Activate an ignored namespace for a subscription
+      tags:
+      - Subscriptions
+components:
+  schemas:
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

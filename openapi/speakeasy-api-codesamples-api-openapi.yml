@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts CodeSamples API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- name: CodeSamples
+  description: REST APIs for retrieving Code Samples
+paths:
+  /v1/code_sample:
+    get:
+      summary: Retrieve usage snippets
+      description: Retrieve usage snippets from an OpenAPI document stored in the registry. Supports filtering by language and operation ID.
+      operationId: getCodeSamples
+      x-speakeasy-name-override: get
+      tags:
+      - CodeSamples
+      parameters:
+      - name: registry_url
+        description: The registry URL from which to retrieve the snippets.
+        in: query
+        required: true
+        example: https://spec.speakeasy.com/my-org/my-workspace/my-source
+        schema:
+          type: string
+      - name: operation_ids
+        description: The operation IDs to retrieve snippets for.
+        in: query
+        required: false
+        example: getPets
+        schema:
+          type: array
+          items:
+            type: string
+      - name: method_paths
+        description: The method paths to retrieve snippets for.
+        in: query
+        required: false
+        example:
+        - method: get
+          path: /pets
+        schema:
+          type: array
+          items:
+            type: object
+            required:
+            - method
+            - path
+            properties:
+              method:
+                $ref: '#/components/schemas/HttpMethod'
+              path:
+                type: string
+      - name: languages
+        description: The languages to retrieve snippets for.
+        in: query
+        required: false
+        example:
+        - python
+        - javascript
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSnippets'
+              examples:
+                default:
+                  $ref: '#/components/examples/UsageSnippets'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/code_sample/preview:
+    post:
+      summary: Generate Code Sample previews from a file and configuration parameters.
+      description: This endpoint generates Code Sample previews from a file and configuration parameters.
+      operationId: generateCodeSamplePreview
+      tags:
+      - CodeSamples
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CodeSampleSchemaInput'
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSnippets'
+              examples:
+                default:
+                  $ref: '#/components/examples/UsageSnippets'
+        4XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/code_sample/preview/async:
+    post:
+      summary: Initiate asynchronous Code Sample preview generation from a file and configuration parameters, receiving an async JobID response for polling.
+      description: This endpoint generates Code Sample previews from a file and configuration parameters, receiving an async JobID response for polling.
+      operationId: generateCodeSamplePreviewAsync
+      tags:
+      - CodeSamples
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CodeSampleSchemaInput'
+      responses:
+        '202':
+          description: Job accepted, returns a job ID to poll for status and result
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - job_id
+                - status
+                properties:
+                  job_id:
+                    type: string
+                    description: The job ID for polling
+                  status:
+                    $ref: '#/components/schemas/CodeSamplesJobStatus'
+        4XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/code_sample/preview/async/{jobID}:
+    get:
+      summary: Poll for the result of an asynchronous Code Sample preview generation.
+      description: Poll for the result of an asynchronous Code Sample preview generation.
+      operationId: getCodeSamplePreviewAsync
+      tags:
+      - CodeSamples
+      parameters:
+      - in: path
+        name: jobID
+        required: true
+        schema:
+          type: string
+        description: The ID of the job to check the status and retrieve results
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageSnippets'
+              examples:
+                default:
+                  $ref: '#/components/examples/UsageSnippets'
+        '202':
+          description: Job is still in progress
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - status
+                properties:
+                  status:
+                    $ref: '#/components/schemas/CodeSamplesJobStatus'
+        4XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    UsageSnippet:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path of the operation
+        method:
+          description: The HTTP method of the operation
+        operationId:
+          type: string
+          description: The operation ID for the snippet
+        language:
+          type: string
+          description: The language of the snippet
+        code:
+          type: string
+          description: The code snippet
+      required:
+      - path
+      - method
+      - operationId
+      - language
+      - code
+    HttpMethod:
+      type: string
+      enum:
+      - get
+      - post
+      - put
+      - patch
+      - delete
+      - head
+      - options
+      - trace
+    CodeSamplesJobStatus:
+      type: string
+      enum:
+      - pending
+      - running
+      description: The current status of the job. Possible values are `pending` or `running`.
+    UsageSnippets:
+      type: object
+      properties:
+        snippets:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsageSnippet'
+      required:
+      - snippets
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+    CodeSampleSchemaInput:
+      type: object
+      required:
+      - schema_file
+      - language
+      properties:
+        package_name:
+          type: string
+          description: The name of the package
+        sdk_class_name:
+          type: string
+          description: The SDK class name
+        language:
+          type: string
+          description: The language to generate code samples for
+        operation_ids:
+          type: array
+          items:
+            type: string
+          description: A list of operations IDs to generate code samples for
+        schema_file:
+          type: string
+          format: binary
+          description: The OpenAPI file to be uploaded
+  examples:
+    UsageSnippets:
+      summary: Array of usage snippets
+      value:
+        snippets:
+        - operationId: getPetById
+          path: /pet/{id}
+          method: get
+          language: typescript
+          code: "import { Petstore } from \"petstore-sdk\";\n\nconst petstore = new Petstore({\n  apiKey: \"<YOUR_API_KEY_HERE>\",\n});\n\nasync function run() {\n  const result = await petstore.pet.getById({\n    id: 137396,\n  });\n\n  // Handle the result\n  console.log(result);\n}\n\nrun();"
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

@@ -1,0 +1,369 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Organizations API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- name: Organizations
+  description: REST APIs for managing Organizations (speakeasy L1 Tenancy construct)
+paths:
+  /v1/organizations:
+    get:
+      summary: Get organizations for a user
+      description: Returns a list of organizations a user has access too
+      operationId: getOrganizations
+      x-speakeasy-name-override: getAll
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                title: Organizations
+                items:
+                  $ref: '#/components/schemas/Organization'
+                type: array
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - Organizations
+  /v1/organization:
+    post:
+      summary: Create an organization
+      description: Creates an organization
+      operationId: createOrganization
+      x-speakeasy-name-override: create
+      requestBody:
+        description: The organization to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+        required: true
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - Organizations
+  /v1/organization/{organizationID}:
+    parameters:
+    - name: organizationID
+      in: path
+      required: true
+      description: Unique identifier of the organization.
+      schema:
+        type: string
+    get:
+      summary: Get organization
+      description: Get information about a particular organization.
+      operationId: getOrganization
+      x-speakeasy-name-override: get
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - Organizations
+  /v1/organization/free_trial:
+    post:
+      summary: Create a free trial for an organization
+      description: Creates a free trial for an organization
+      operationId: createFreeTrial
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - Organizations
+  /v1/organization/usage:
+    get:
+      summary: Get billing usage summary for a particular organization
+      description: Returns a billing usage summary by target languages for a particular organization
+      operationId: getOrganizationUsage
+      x-speakeasy-name-override: getUsage
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUsageResponse'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - Organizations
+  /v1/organization/add_ons:
+    post:
+      summary: Create billing add ons
+      operationId: createBillingAddOns
+      tags:
+      - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationBillingAddOnRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationBillingAddOnResponse'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get billing add ons
+      operationId: getBillingAddOns
+      tags:
+      - Organizations
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationBillingAddOnResponse'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/organization/add_ons/{add_on}:
+    parameters:
+    - name: add_on
+      in: path
+      required: true
+      description: The specific add-on to delete.
+      schema:
+        $ref: '#/components/schemas/BillingAddOn'
+    delete:
+      summary: Delete billing add ons
+      operationId: deleteBillingAddOn
+      tags:
+      - Organizations
+      responses:
+        '200':
+          description: Success
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    BillingAddOn:
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - webhooks
+      - sdk_testing
+      - custom_code_regions
+      - snippet_ai
+    OrganizationUsage:
+      type: object
+      properties:
+        number_of_operations:
+          type: integer
+          description: Number of operations performed
+        max_operations:
+          type: integer
+          description: Maximum Number of operations per SDK specific in contract
+        language:
+          type: string
+          description: The programming language used
+        used_features:
+          type: array
+          items:
+            type: string
+          description: Features that have been used
+        accessible_features:
+          type: array
+          items:
+            type: string
+          description: Features that are accessible
+        accessible:
+          type: boolean
+          description: Indicates if the features are accessible
+        workspaces:
+          type: array
+          items:
+            type: string
+          description: List of workspace IDs
+        gen_lock_ids:
+          type: array
+          items:
+            type: string
+          description: List of generation lock IDs
+      required:
+      - number_of_operations
+      - max_operations
+      - language
+      - used_features
+      - accessible_features
+      - accessible
+      - workspaces
+      - gen_lock_ids
+    OrganizationBillingAddOnRequest:
+      description: A request to add billing add ons
+      type: object
+      properties:
+        add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAddOn'
+      required:
+      - add_ons
+    Organization:
+      description: A speakeasy organization
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        account_type:
+          $ref: '#/components/schemas/AccountType'
+        telemetry_disabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        free_trial_expiry:
+          type: string
+          format: date-time
+          nullable: true
+        sso_connection_id:
+          type: string
+          nullable: true
+        sso_activated:
+          type: boolean
+        internal:
+          type: boolean
+      required:
+      - id
+      - name
+      - slug
+      - account_type
+      - telemetry_disabled
+      - sso_activated
+      - created_at
+      - updated_at
+      type: object
+    AccountType:
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - free
+      - scale-up
+      - business
+      - enterprise
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+    OrganizationBillingAddOnResponse:
+      description: Billing add on response
+      properties:
+        add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAddOn'
+      required:
+      - add_ons
+    OrganizationUsageResponse:
+      description: A billing summary of organization usage
+      type: object
+      properties:
+        usage:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationUsage'
+        free_trial_expiry:
+          format: date-time
+          readOnly: true
+          type: string
+          description: Expiry date of the free trial, will be null if no trial
+        total_allowed_languages:
+          type: integer
+          description: Total number of allowed languages, -1 if unlimited
+        allowed_languages:
+          type: array
+          items:
+            type: string
+          description: List of allowed languages
+      required:
+      - usage
+      - total_allowed_languages
+      - allowed_languages
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

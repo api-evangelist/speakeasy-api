@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts SchemaStore API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- name: SchemaStore
+paths:
+  /v1/schema_store:
+    summary: The schema store is a publicly accessible store of OAS schemas. Used in the Speakeasy Sandbox and CLI.
+    get:
+      summary: Get a OAS schema from the schema store
+      operationId: getSchemaStoreItem
+      tags:
+      - SchemaStore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaStoreItem'
+        4XX:
+          $ref: '#/components/responses/default'
+    post:
+      summary: Create a schema in the schema store
+      operationId: createSchemaStoreItem
+      tags:
+      - SchemaStore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                spec:
+                  type: string
+                  description: The OpenAPI specification to store.
+                packageName:
+                  type: string
+                  description: The package name to use in code snippets / quickstart.
+                sdkClassname:
+                  type: string
+                  description: The classname of the SDK to use in code snippets / quickstart.
+                format:
+                  type: string
+                  description: The format of the OpenAPI specification.
+                  enum:
+                  - json
+                  - yaml
+              required:
+              - spec
+              - format
+              - packageName
+              - sdkClassname
+        required: true
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaStoreItem'
+        4XX:
+          $ref: '#/components/responses/default'
+components:
+  schemas:
+    SchemaStoreItem:
+      type: object
+      properties:
+        id:
+          type: string
+        spec:
+          type: string
+        packageName:
+          type: string
+        sdkClassname:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        format:
+          type: string
+          enum:
+          - json
+          - yaml
+      required:
+      - id
+      - spec
+      - created_at
+      - format
+      - packageName
+      - sdkClassname
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

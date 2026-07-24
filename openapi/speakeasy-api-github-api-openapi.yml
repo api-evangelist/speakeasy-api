@@ -1,0 +1,531 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Github API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- description: REST APIs for managing the github integration
+  name: Github
+paths:
+  /v1/github/setup:
+    get:
+      operationId: getGithubSetupState
+      x-speakeasy-name-override: getSetup
+      tags:
+      - Github
+      parameters:
+      - in: query
+        name: org
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: repo
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: generate_gen_lock_id
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubSetupStateResponse'
+          description: github setup state response
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/check_access:
+    get:
+      operationId: checkGithubAccess
+      x-speakeasy-name-override: checkAccess
+      tags:
+      - Github
+      parameters:
+      - in: query
+        name: org
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: repo
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/link:
+    post:
+      operationId: linkGithubAccess
+      x-speakeasy-name-override: linkGithub
+      tags:
+      - Github
+      parameters:
+      - in: query
+        name: installation_id
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: github_org
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: github_oidc_token
+        required: false
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/publishing_prs:
+    get:
+      operationId: githubCheckPublishingPRs
+      x-speakeasy-name-override: checkPublishingPRs
+      x-speakeasy-test: false
+      tags:
+      - Github
+      parameters:
+      - in: query
+        name: generate_gen_lock_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: org
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: repo
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubPublishingPRResponse'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/publishing_secrets:
+    get:
+      operationId: githubCheckPublishingSecrets
+      x-speakeasy-name-override: checkPublishingSecrets
+      x-speakeasy-test: false
+      tags:
+      - Github
+      parameters:
+      - in: query
+        name: generate_gen_lock_id
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubMissingPublishingSecretsResponse'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+    post:
+      operationId: githubStorePublishingSecrets
+      x-speakeasy-name-override: storePublishingSecrets
+      tags:
+      - Github
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubStorePublishingSecretsRequest'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/configure_code_samples:
+    post:
+      operationId: githubConfigureCodeSamples
+      x-speakeasy-name-override: configureCodeSamples
+      tags:
+      - Github
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubConfigureCodeSamplesRequest'
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubConfigureCodeSamplesResponse'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/configure_mintlify_repo:
+    post:
+      operationId: githubConfigureMintlifyRepo
+      x-speakeasy-name-override: configureMintlifyRepo
+      tags:
+      - Github
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubConfigureMintlifyRepoRequest'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/configure_target:
+    post:
+      operationId: githubConfigureTarget
+      x-speakeasy-name-override: configureTarget
+      tags:
+      - Github
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubConfigureTargetRequest'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/trigger_action:
+    post:
+      operationId: githubTriggerAction
+      x-speakeasy-name-override: triggerAction
+      tags:
+      - Github
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GithubTriggerActionRequest'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/github/action:
+    get:
+      operationId: getGitHubAction
+      x-speakeasy-name-override: getAction
+      x-speakeasy-test: false
+      tags:
+      - Github
+      parameters:
+      - description: The targetName of the workflow target.
+        in: query
+        name: targetName
+        schema:
+          type: string
+      - in: query
+        name: org
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: repo
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GithubGetActionResponse'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+components:
+  schemas:
+    GithubConfigureCodeSamplesRequest:
+      description: A request to configure GitHub code samples
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo:
+          type: string
+          description: The GitHub repository name
+        targetName:
+          type: string
+          description: The target name for the code samples
+      required:
+      - org
+      - repo
+      - targetName
+    GithubSetupStateResponse:
+      description: The state of a particular SDK targets github setup
+      type: object
+      properties:
+        app_installed:
+          type: boolean
+        actions:
+          type: object
+          properties:
+            generation_action_configured:
+              type: boolean
+            publish_action_configured:
+              type: boolean
+          required:
+          - generation_action_configured
+          - publish_action_configured
+        secrets:
+          type: object
+          properties:
+            api_key_configured:
+              type: boolean
+            publishing_secrets_configured:
+              type: boolean
+          required:
+          - api_key_configured
+          - publishing_secrets_configured
+      required:
+      - app_installed
+      - actions
+      - secrets
+    GithubTriggerActionRequest:
+      description: A request to trigger an action on a GitHub target
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo_name:
+          type: string
+          description: The GitHub repository name
+        target_name:
+          type: string
+          description: The target name for the action
+        gen_lock_id:
+          type: string
+          description: The generation lock ID
+        set_version:
+          type: string
+          description: A version to override the SDK too in workflow dispatch
+        force:
+          type: boolean
+          description: Force an SDK generation
+      required:
+      - org
+      - repo_name
+      - gen_lock_id
+    GithubPublishingPRResponse:
+      description: Open generation PRs pending publishing
+      type: object
+      properties:
+        pull_request:
+          type: string
+        pending_version:
+          type: string
+        pull_request_metadata:
+          description: This can only be populated when the github app is installed for a repo
+          type: object
+          properties:
+            status:
+              type: string
+            title:
+              type: string
+            created_at:
+              format: date-time
+              type: string
+            description:
+              description: truncated to first 1000 characters
+              type: string
+            head_branch:
+              type: string
+            base_branch:
+              type: string
+            can_merge:
+              type: boolean
+            labels:
+              description: List of github labels
+              type: array
+              items:
+                type: string
+            requested_reviewers:
+              description: List of github handles
+              type: array
+              items:
+                type: string
+    GithubStorePublishingSecretsRequest:
+      description: A request to store publishing secrets for a github target
+      type: object
+      properties:
+        generate_gen_lock_id:
+          type: string
+          description: The generation lock ID
+        secrets:
+          type: object
+          description: A map of secrets to store in the GitHub target
+          additionalProperties:
+            type: string
+      required:
+      - generate_gen_lock_id
+    GithubConfigureMintlifyRepoRequest:
+      description: A request to configure a GitHub repository for mintlify
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo:
+          type: string
+          description: The GitHub repository name
+        subdirectory:
+          type: string
+          description: The subdirectory (location of mint.json)
+        input:
+          type: string
+          description: The input OpenAPI document
+        overlays:
+          type: array
+          description: The overlays to apply
+          items:
+            type: string
+      required:
+      - org
+      - repo
+      - input
+      - overlays
+    GithubConfigureCodeSamplesResponse:
+      description: A response to configure GitHub code samples
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/WorkflowDocument'
+        codeSampleOverlayRegistryURL:
+          type: string
+          description: The URL of the code sample overlay registry
+        ghActionID:
+          type: string
+          description: The ID of the GitHub action that was dispatched
+      required:
+      - source
+      - codeSampleOverlayRegistryURL
+    WorkflowDocument:
+      description: A document referenced by a workflow
+      properties:
+        location:
+          type: string
+        auth:
+          type: object
+          properties:
+            header:
+              type: string
+            secret:
+              type: string
+          required:
+          - header
+          - secret
+      required:
+      - location
+    GithubMissingPublishingSecretsResponse:
+      description: A valid response containing MISSING publishing secret keys for a github target
+      type: object
+      properties:
+        missing_secrets:
+          type: array
+          items:
+            type: string
+    GithubConfigureTargetRequest:
+      description: A request to configure a GitHub target
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo_name:
+          type: string
+          description: The GitHub repository name
+      required:
+      - org
+      - repo_name
+    GithubGetActionResponse:
+      description: response to a getting the latest action run on a GitHub request
+      type: object
+      properties:
+        run_url:
+          type: string
+          description: The URL for latest action run if available
+        run_status:
+          type: string
+          description: The status of the latest action run if available
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

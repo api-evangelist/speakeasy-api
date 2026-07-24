@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts PublishingTokens API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- name: PublishingTokens
+paths:
+  /v1/publishing-tokens:
+    get:
+      summary: Get publishing tokens for a workspace
+      description: Returns a publishing token for the current workspace
+      operationId: getPublishingToken
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublishingToken'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: list
+    post:
+      summary: Create a publishing token for a workspace
+      description: Creates a publishing token for the current workspace
+      operationId: createPublishingToken
+      requestBody:
+        description: The publishing token to create
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                target_id:
+                  type: string
+                target_resource:
+                  type: string
+                valid_until:
+                  type: string
+                  format: date-time
+                token_name:
+                  type: string
+              required:
+              - target_id
+              - target_resource
+              - valid_until
+              - token_name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishingToken'
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: create
+  /v1/publishing-tokens/{tokenID}:
+    get:
+      parameters:
+      - name: tokenID
+        in: path
+        required: true
+        description: Unique identifier of the publishing token.
+        schema:
+          type: string
+      summary: Get a specific publishing token
+      description: Get information about a particular publishing token.
+      operationId: getPublishingTokenByID
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishingToken'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: get
+    put:
+      parameters:
+      - name: tokenID
+        in: path
+        required: true
+        description: Unique identifier of the publishing token.
+        schema:
+          type: string
+      requestBody:
+        description: The publishing token to update
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - valid_until
+              properties:
+                valid_until:
+                  type: string
+                  format: date-time
+                  description: The new expiration date for the publishing token.
+                token_name:
+                  type: string
+                  description: The new name for the publishing token.
+      summary: Updates the validitity period of a publishing token
+      description: Updates the validity period of a particular publishing token.
+      operationId: updatePublishingTokenExpiration
+      responses:
+        '200':
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: update
+    delete:
+      parameters:
+      - name: tokenID
+        in: path
+        required: true
+        description: Unique identifier of the publishing token.
+        schema:
+          type: string
+      summary: Delete a specific publishing token
+      description: Delete a particular publishing token.
+      operationId: deletePublishingToken
+      responses:
+        '200':
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: delete
+  /v1/publishing-tokens/{tokenID}/target:
+    parameters:
+    - name: tokenID
+      in: path
+      required: true
+      description: Unique identifier of the publishing token.
+      schema:
+        type: string
+    get:
+      summary: Get a specific publishing token target
+      description: Get information about a particular publishing token target.
+      operationId: getPublishingTokenTargetByID
+      responses:
+        '200':
+          content:
+            text/plain:
+              schema:
+                type: object
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: resolveTarget
+  /v1/publishing-tokens/{tokenID}/metadata:
+    parameters:
+    - name: tokenID
+      in: path
+      required: true
+      description: Unique identifier of the publishing token.
+      schema:
+        type: string
+    get:
+      summary: Get metadata about the token
+      description: Get information about a particular publishing token.
+      operationId: getPublishingTokenPublicMetadata
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  target_id:
+                    type: string
+                  target_resource:
+                    type: string
+                  workspace_id:
+                    type: string
+                  organization_id:
+                    type: string
+                  valid_until:
+                    type: string
+                    format: date-time
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - PublishingTokens
+      x-speakeasy-name-override: resolveMetadata
+components:
+  schemas:
+    PublishingToken:
+      description: A token used to publish to a target
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+        valid_until:
+          type: string
+          format: date-time
+        token_name:
+          type: string
+        target_id:
+          type: string
+        target_resource:
+          enum:
+          - document
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+        updated_by:
+          type: string
+        organization_id:
+          type: string
+        workspace_id:
+          type: string
+      required:
+      - target_id
+      - target_resource
+      - valid_until
+      - token_name
+      - id
+      - token
+      - created_at
+      - created_by
+      - organization_id
+      - workspace_id
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

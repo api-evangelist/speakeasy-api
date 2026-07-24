@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Suggest API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- description: REST APIs for managing LLM OAS suggestions
+  name: Suggest
+paths:
+  /v1/suggest/openapi:
+    post:
+      summary: (DEPRECATED) Generate suggestions for improving an OpenAPI document.
+      description: Get suggestions from an LLM model for improving an OpenAPI document.
+      operationId: suggestOpenAPI
+      x-speakeasy-test: false
+      parameters:
+      - in: header
+        name: x-session-id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The schema file to upload provided as a multipart/form-data file segment.
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                opts:
+                  $ref: '#/components/schemas/SuggestOptsOld'
+                schema:
+                  format: binary
+                  type: string
+              required:
+              - schema
+              type: object
+        required: true
+      responses:
+        2XX:
+          description: An overlay containing the suggested spec modifications.
+          content:
+            application/json:
+              schema:
+                format: binary
+                title: Schema
+                type: string
+      tags:
+      - Suggest
+  /v1/suggest/openapi_from_summary:
+    post:
+      summary: Generate suggestions for improving an OpenAPI document.
+      description: Get suggestions from an LLM model for improving an OpenAPI document.
+      operationId: suggest
+      x-speakeasy-test: false
+      parameters:
+      - in: header
+        name: x-session-id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The OAS summary and diagnostics to use for the suggestion.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestRequestBody'
+        required: true
+      responses:
+        2XX:
+          description: An overlay containing the suggested spec modifications.
+          content:
+            application/json:
+              schema:
+                format: binary
+                title: Schema
+                type: string
+      tags:
+      - Suggest
+  /v1/suggest/items:
+    post:
+      summary: Generate generic suggestions for a list of items.
+      operationId: suggestItems
+      requestBody:
+        description: The OAS summary and diagnostics to use for the suggestion.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestItemsRequestBody'
+        required: true
+      responses:
+        2XX:
+          description: One suggestion per item. Guaranteed to be the same length as the input items.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags:
+      - Suggest
+  /v1/suggest/openapi/{namespace_name}/{revision_reference}:
+    post:
+      summary: Generate suggestions for improving an OpenAPI document stored in the registry.
+      description: Get suggestions from an LLM model for improving an OpenAPI document stored in the registry.
+      operationId: suggestOpenAPIRegistry
+      x-speakeasy-test: false
+      parameters:
+      - in: header
+        name: x-session-id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: revision_reference
+        required: true
+        schema:
+          type: string
+        description: Tag or digest
+      requestBody:
+        description: Suggest options
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestRequestBody'
+      responses:
+        2XX:
+          description: An overlay containing the suggested spec modifications.
+          content:
+            application/json:
+              schema:
+                format: binary
+                title: Schema
+                type: string
+      tags:
+      - Suggest
+components:
+  schemas:
+    OASInfo:
+      type: object
+      properties:
+        title:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        license:
+          type: object
+          properties:
+            identifier:
+              type: string
+      required:
+      - title
+      - summary
+      - description
+      - version
+      - license
+    SuggestOptsOld:
+      type: object
+      properties:
+        suggestion_type:
+          type: string
+          enum:
+          - method-names
+          - diagnostics-only
+        diagnostics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Diagnostic'
+      required:
+      - suggestion_type
+    Diagnostic:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message describing the issue
+        path:
+          type: array
+          items:
+            type: string
+          description: Schema path to the issue
+        type:
+          type: string
+          description: Issue type
+        helpMessage:
+          type: string
+          description: Help message for how to fix the issue
+      required:
+      - message
+      - path
+      - type
+    SuggestItemsRequestBody:
+      type: object
+      properties:
+        prompt:
+          description: The prompt to use for the suggestion. Think of this as the "preamble".
+          type: string
+        items:
+          description: The list of "things" to get suggestions for. One suggestion will be returned for each item in the list.
+          type: array
+          items:
+            type: string
+      required:
+      - prompt
+      - items
+    OASSummary:
+      type: object
+      properties:
+        info:
+          $ref: '#/components/schemas/OASInfo'
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/OASOperation'
+      required:
+      - info
+      - operations
+    OASOperation:
+      type: object
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        operation_id:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        method_name_override:
+          type: string
+        group_override:
+          type: string
+      required:
+      - method
+      - path
+      - operation_id
+      - description
+      - tags
+    SuggestRequestBody:
+      type: object
+      properties:
+        oas_summary:
+          $ref: '#/components/schemas/OASSummary'
+        suggestion_type:
+          type: string
+          enum:
+          - method-names
+          - diagnostics-only
+        diagnostics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Diagnostic'
+      required:
+      - oas_summary
+      - suggestion_type
+      - diagnostics
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

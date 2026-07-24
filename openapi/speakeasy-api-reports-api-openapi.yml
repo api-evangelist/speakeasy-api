@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Reports API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- description: REST APIs for managing reports (lint reports, change reports, etc)
+  name: Reports
+paths:
+  /v1/reports:
+    post:
+      summary: Upload a report.
+      operationId: uploadReport
+      requestBody:
+        description: The report file to upload provided as a multipart/form-data file segment.
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Report'
+                file:
+                  format: binary
+                  type: string
+              required:
+              - data
+              - file
+        required: true
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: uploadedReport
+                properties:
+                  url:
+                    type: string
+                required:
+                - url
+      tags:
+      - Reports
+  /v1/reports/linting/{documentChecksum}:
+    get:
+      summary: Get the signed access url for the linting reports for a particular document.
+      operationId: getLintingReportSignedUrl
+      parameters:
+      - description: The checksum of the document to retrieve the signed access url for.
+        in: path
+        name: documentChecksum
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: signedAccess
+                properties:
+                  url:
+                    type: string
+                required:
+                - url
+      tags:
+      - Reports
+  /v1/reports/changes/{documentChecksum}:
+    get:
+      summary: Get the signed access url for the change reports for a particular document.
+      operationId: getChangesReportSignedUrl
+      parameters:
+      - description: The checksum of the document to retrieve the signed access url for.
+        in: path
+        name: documentChecksum
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                title: signedAccess
+                properties:
+                  url:
+                    type: string
+                required:
+                - url
+      tags:
+      - Reports
+components:
+  schemas:
+    Report:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - linting
+          - changes
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

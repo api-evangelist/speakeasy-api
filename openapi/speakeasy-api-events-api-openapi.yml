@@ -1,0 +1,722 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Events API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- description: REST APIs for managing events captured by a speakeasy binary (CLI, GitHub Action etc)
+  name: Events
+paths:
+  /v1/workspace/{workspace_id}/events:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    get:
+      description: Search events for a particular workspace by any field
+      operationId: searchWorkspaceEvents
+      x-speakeasy-name-override: search
+      x-speakeasy-test: false
+      parameters:
+      - name: source_revision_digest
+        in: query
+        required: false
+        description: Unique identifier of the source revision digest.
+        schema:
+          type: string
+      - name: lint_report_digest
+        in: query
+        required: false
+        description: Unique identifier of the lint report digest.
+        schema:
+          type: string
+      - name: openapi_diff_report_digest
+        in: query
+        required: false
+        description: Unique identifier of the openapi diff report digest.
+        schema:
+          type: string
+      - name: interaction_type
+        in: query
+        required: false
+        description: Specified interaction type for events.
+        schema:
+          $ref: '#/components/schemas/InteractionType'
+      - name: generate_gen_lock_id
+        in: query
+        required: false
+        description: A specific gen lock ID for the events.
+        schema:
+          type: string
+      - name: execution_id
+        in: query
+        required: false
+        description: Shared execution ID for cli events across a single action.
+        schema:
+          type: string
+      - name: success
+        in: query
+        required: false
+        description: Whether the event was successful or not.
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        required: false
+        description: Number of results to return.
+        schema:
+          type: integer
+      tags:
+      - Events
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CliEventBatch'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Post events for a specific workspace
+      description: Sends an array of events to be stored for a particular workspace.
+      operationId: postWorkspaceEvents
+      x-speakeasy-name-override: post
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 2000
+          maxElapsedTime: 60000
+          exponent: 1.5
+        statusCodes:
+        - 408
+        - 500
+        - 502
+        - 503
+        retryConnectionErrors: true
+      x-speakeasy-test: false
+      tags:
+      - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CliEventBatch'
+      responses:
+        2XX:
+          description: Success
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/workspace/{workspace_id}/events/targets/{target_id}/events:
+    get:
+      description: Load recent events for a particular workspace
+      operationId: getWorkspaceEventsByTarget
+      x-speakeasy-name-override: getEventsByTarget
+      x-speakeasy-test: false
+      tags:
+      - Events
+      parameters:
+      - name: workspace_id
+        in: path
+        required: true
+        description: Unique identifier of the workspace.
+        schema:
+          type: string
+      - name: target_id
+        in: path
+        description: Filter to only return events corresponding to a particular gen_lock_id (gen_lock_id uniquely identifies a target)
+        required: true
+        schema:
+          type: string
+      - name: after_created_at
+        in: query
+        description: Filter to only return events created after this timestamp
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CliEventBatch'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/workspace/events/targets:
+    parameters:
+    - name: after_last_event_created_at
+      in: query
+      description: Filter to only return targets with events created after this timestamp
+      required: false
+      schema:
+        type: string
+        format: date-time
+    get:
+      description: Load targets for a particular workspace
+      operationId: getWorkspaceTargets
+      x-speakeasy-name-override: getTargets
+      x-speakeasy-test: false
+      tags:
+      - Events
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetSDKList'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/workspace/{workspace_id}/events/targets:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    - name: after_last_event_created_at
+      in: query
+      description: Filter to only return targets with events created after this timestamp
+      required: false
+      schema:
+        type: string
+        format: date-time
+    get:
+      description: Load targets for a particular workspace
+      operationId: getWorkspaceTargetsDeprecated
+      x-speakeasy-name-override: getTargetsDeprecated
+      x-speakeasy-test: false
+      tags:
+      - Events
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TargetSDKList'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    CliEvent:
+      type: object
+      required:
+      - id
+      - execution_id
+      - workspace_id
+      - speakeasy_api_key_name
+      - interaction_type
+      - local_started_at
+      - created_at
+      - speakeasy_version
+      - success
+      properties:
+        id:
+          type: string
+          description: Unique identifier for each event.
+        execution_id:
+          type: string
+          description: Unique identifier for each execution of the CLI.
+        workspace_id:
+          type: string
+          description: Identifier of the workspace.
+        speakeasy_api_key_name:
+          type: string
+          description: Identifier of the Speakeasy API key.
+        interaction_type:
+          $ref: '#/components/schemas/InteractionType'
+          description: Type of interaction.
+        local_started_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event started, in local time.
+        local_completed_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event completed, in local time.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event was created in the database.
+        speakeasy_version:
+          type: string
+          description: Version of the Speakeasy CLI.
+        success:
+          type: boolean
+          description: Indicates whether the event was successful.
+        raw_command:
+          type: string
+          description: Full CLI command.
+        duration_ms:
+          type: integer
+          description: Duration of the event in milliseconds.
+        continuous_integration_environment:
+          type: string
+          description: Name of the CI environment.
+        gh_action_run_link:
+          type: string
+          description: Link to the GitHub action run.
+        gh_action_version:
+          type: string
+          description: Version of the GitHub action.
+        gh_action_organization:
+          type: string
+          description: GitHub organization of the action.
+        gh_pull_request:
+          type: string
+          description: The reference to a created pull request URL.
+        gh_changes_committed:
+          type: boolean
+          description: Whether or not changes were committed from generation in the Github Action.
+        gh_action_ref:
+          type: string
+          description: GitHub Action ref value.
+        gh_action_repository:
+          type: string
+          description: GitHub repository of the action.
+        repo_label:
+          type: string
+          description: Label of the git repository.
+        commit_head:
+          type: string
+          description: Remote commit ID.
+        hostname:
+          type: string
+          description: Remote hostname.
+        git_user_name:
+          type: string
+          description: User's name from git configuration. (not GitHub username)
+        git_user_email:
+          type: string
+          description: User email from git configuration.
+        git_remote_default_owner:
+          type: string
+          description: Default owner for git remote.
+        git_remote_default_repo:
+          type: string
+          description: Default repository name for git remote.
+        git_relative_cwd:
+          type: string
+          description: Current working directory relative to the git root.
+        generate_target:
+          type: string
+          description: The target of the event.
+        generate_target_name:
+          type: string
+          description: The workflow name of the target.
+        generate_target_version:
+          type: string
+          description: The version of the target.
+        generate_gen_lock_id:
+          type: string
+          description: gen.lock ID (expected to be a uuid).
+        management_doc_checksum:
+          type: string
+          description: Checksum of the currently Rendered OpenAPI document.
+        management_doc_version:
+          type: string
+          description: Version taken from info.version field of the Rendered OpenAPI document.
+        generate_version:
+          type: string
+          description: Version of the generation logic used.
+        generate_output_tests:
+          type: boolean
+          description: Indicates whether tests were output.
+        generate_config_pre_raw:
+          type: string
+          description: Rendered configuration file (prior to generation)
+        generate_config_post_raw:
+          type: string
+          description: Rendered configuration file (post generation)
+        generate_config_pre_version:
+          type: string
+          description: The version of the customer's SDK before we generated
+        generate_config_post_version:
+          type: string
+          description: The version of the customer's SDK that we just generated
+        generate_config_pre_checksum:
+          type: string
+          description: Checksum of the configuration file (prior to generation)
+        generate_config_post_checksum:
+          type: string
+          description: Checksum of the configuration file (post generation)
+        generate_eligible_features:
+          type: string
+          description: Eligible feature set during generation
+        generate_gen_lock_pre_features:
+          type: string
+          description: Features prior to generation
+        generate_gen_lock_post_features:
+          type: string
+          description: Features post generation
+        generate_gen_lock_pre_doc_version:
+          type: string
+          description: info.Version of the Previous Rendered OpenAPI document (prior to generation, via gen lock)
+        generate_gen_lock_pre_doc_checksum:
+          type: string
+          description: Checksum of the Previous Rendered OpenAPI document (prior to generation, via gen lock)
+        generate_gen_lock_pre_version:
+          type: string
+          description: Artifact version for the Previous Generation
+        generate_gen_lock_pre_revision_digest:
+          type: string
+          description: Revision digest of the Previous Generation
+        generate_gen_lock_pre_blob_digest:
+          type: string
+          description: Blob digest of the Previous Generation
+        generate_gen_lock_pre_namespace_name:
+          type: string
+          description: Namespace name of the Previous Generation
+        generate_bump_type:
+          type: string
+          description: Bump type of the lock file (calculated semver delta, custom change (manual release), or prerelease/graduate)
+          enum:
+          - major
+          - minor
+          - patch
+          - custom
+          - graduate
+          - prerelease
+          - none
+        generate_number_of_operations_ignored:
+          type: integer
+          description: The number of operations ignored in generation.
+        generate_number_of_operations_used:
+          type: integer
+          description: The number of operations used in generation.
+        generate_number_of_terraform_resources:
+          type: integer
+          description: The number of terraform resources used in generation.
+        generate_published:
+          type: boolean
+          description: Indicates whether the target was considered published.
+        generate_repo_url:
+          type: string
+          description: Expected Repo URL, for use in documentation generation.
+        publish_package_url:
+          type: string
+          description: URL of the published package.
+        publish_package_name:
+          type: string
+          description: Name of the published package.
+        publish_package_version:
+          type: string
+          description: Version of the published package.
+        publish_package_registry_name:
+          type: string
+          description: Name of the registry where the package was published.
+        source_revision_digest:
+          type: string
+          description: The revision digest of the source.
+        source_blob_digest:
+          type: string
+          description: The blob digest of the source.
+        source_namespace_name:
+          type: string
+          description: The namespace name of the source.
+        lint_report_digest:
+          type: string
+          description: The checksum of the lint report.
+        lint_report_error_count:
+          type: integer
+          description: The number of errors in the lint report.
+        lint_report_warning_count:
+          type: integer
+          description: The number of warnings in the lint report.
+        lint_report_info_count:
+          type: integer
+          description: The number of info messages in the lint report.
+        openapi_diff_report_digest:
+          type: string
+          description: The checksum of the openapi diff report.
+        openapi_diff_base_source_revision_digest:
+          type: string
+          description: The revision digest of the base source.
+        openapi_diff_base_source_blob_digest:
+          type: string
+          description: The blob digest of the base source.
+        openapi_diff_base_source_namespace_name:
+          type: string
+          description: The namespace name of the base source.
+        openapi_diff_breaking_changes_count:
+          type: integer
+          description: The number of breaking changes in the openapi diff report.
+        openapi_diff_bump_type:
+          type: string
+          description: Bump type of the lock file (calculated semver delta, or a custom change (manual release))
+          enum:
+          - major
+          - minor
+          - patch
+          - none
+        error:
+          type: string
+          description: Error message if the event was not successful.
+        mermaid_diagram:
+          type: string
+          description: Mermaid diagram
+        last_step:
+          type: string
+          description: The last step of the event.
+        test_report_raw:
+          type: string
+          description: The raw test report xml
+        workflow_pre_raw:
+          type: string
+          description: Workflow file (prior to execution)
+        workflow_post_raw:
+          type: string
+          description: Workflow file (post execution)
+        workflow_lock_pre_raw:
+          type: string
+          description: Workflow lock file (prior to execution)
+        workflow_lock_post_raw:
+          type: string
+          description: Workflow lock file (post execution)
+    InteractionType:
+      type: string
+      description: Type of interaction.
+      enum:
+      - CI_EXEC
+      - CLI_EXEC
+      - LINT
+      - OPENAPI_DIFF
+      - TARGET_GENERATE
+      - TOMBSTONE
+      - AUTHENTICATE
+      - QUICKSTART
+      - RUN
+      - CONFIGURE
+      - PUBLISH
+      - TEST
+    CliEventBatch:
+      type: array
+      items:
+        $ref: '#/components/schemas/CliEvent'
+      minItems: 1
+    TargetSDK:
+      type: object
+      required:
+      - id
+      - generate_target
+      - generate_gen_lock_id
+      - last_event_id
+      - last_event_created_at
+      - last_event_interaction_type
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the target the same as `generate_gen_lock_id`
+        last_event_id:
+          type: string
+          description: Unique identifier of the last event for the target
+        last_event_created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event was created in the database.
+        last_event_interaction_type:
+          $ref: '#/components/schemas/InteractionType'
+          description: Type of interaction.
+        success:
+          type: boolean
+          description: Indicates whether the event was successful.
+        commit_head:
+          type: string
+          description: Remote commit ID.
+        git_remote_default_owner:
+          type: string
+          description: Default owner for git remote.
+        git_remote_default_repo:
+          type: string
+          description: Default repository name for git remote.
+        git_relative_cwd:
+          type: string
+          description: Current working directory relative to the git root.
+        generate_target:
+          type: string
+          description: eg `typescript`, `terraform`, `python`
+        generate_target_name:
+          type: string
+          description: The workflow name of the target.
+        generate_gen_lock_id:
+          type: string
+          description: gen.lock ID (expected to be a uuid). The same as `id`. A unique identifier for the target.
+        generate_target_version:
+          type: string
+          description: The version of the Speakeasy generator for this target eg v2 of the typescript generator.
+        generate_config_post_version:
+          type: string
+          description: Version of the generated target (post generation)
+        generate_gen_lock_pre_features:
+          type: string
+          description: Features prior to generation
+        generate_gen_lock_pre_version:
+          type: string
+          description: Artifact version for the Previous Generation
+        generate_eligible_features:
+          type: string
+          description: Eligible feature set during generation
+        generate_number_of_operations_ignored:
+          type: integer
+          description: The number of operations ignored in generation.
+        generate_number_of_operations_used:
+          type: integer
+          description: The number of operations used in generation.
+        generate_number_of_terraform_resources:
+          type: integer
+          description: The number of terraform resources used in generation.
+        generate_published:
+          type: boolean
+          description: Indicates whether the target was considered published.
+        continuous_integration_environment:
+          type: string
+          description: Name of the CI environment.
+        gh_action_ref:
+          type: string
+          description: GitHub Action ref value.
+        gh_action_run_link:
+          type: string
+          description: Link to the GitHub action run.
+        gh_action_version:
+          type: string
+          description: Version of the GitHub action.
+        gh_action_organization:
+          type: string
+          description: GitHub organization of the action.
+        gh_action_repository:
+          type: string
+          description: GitHub repository of the action.
+        repo_label:
+          type: string
+          description: Label of the git repository.
+        hostname:
+          type: string
+          description: Remote hostname.
+        git_user_name:
+          type: string
+          description: User's name from git configuration. (not GitHub username)
+        git_user_email:
+          type: string
+          description: User email from git configuration.
+        source_revision_digest:
+          type: string
+          description: The revision digest of the source.
+        source_blob_digest:
+          type: string
+          description: The blob digest of the source.
+        source_namespace_name:
+          type: string
+          description: The namespace name of the source.
+        error:
+          type: string
+          description: Error message if the last event was not successful.
+        workflow_pre_raw:
+          type: string
+          description: Workflow file (prior to execution)
+        workflow_post_raw:
+          type: string
+          description: Workflow file (post execution)
+        workflow_lock_pre_raw:
+          type: string
+          description: Workflow lock file (prior to execution)
+        workflow_lock_post_raw:
+          type: string
+          description: Workflow lock file (post execution)
+        publish_package_url:
+          type: string
+          description: URL of the published package.
+        publish_package_name:
+          type: string
+          description: Name of the published package.
+        publish_package_version:
+          type: string
+          description: Version of the published package.
+        publish_package_registry_name:
+          type: string
+          description: Name of the registry where the package was published.
+        last_publish_created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the last publishing event was created.
+        last_publish_gh_action_run_link:
+          type: string
+          description: Link to the GitHub action run for the last publishing event.
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+    TargetSDKList:
+      type: array
+      items:
+        $ref: '#/components/schemas/TargetSDK'
+      minItems: 1
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

@@ -1,0 +1,718 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Workspaces API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- name: Workspaces
+  description: REST APIs for managing Workspaces (speakeasy tenancy)
+paths:
+  /v1/workspaces:
+    get:
+      summary: Get workspaces for a user
+      description: Returns a list of workspaces a user has access too
+      operationId: getWorkspaces
+      x-speakeasy-name-override: getAll
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                title: Workspaces
+                items:
+                  $ref: '#/components/schemas/Workspace'
+                type: array
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+      tags:
+      - Workspaces
+  /v1/workspace:
+    get:
+      summary: Get workspace by context
+      tags:
+      - Workspaces
+      description: Get information about a particular workspace by context.
+      operationId: getWorkspaceByContext
+      x-speakeasy-name-override: get
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceAndOrganization'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+    post:
+      summary: Create a workspace
+      description: Creates a workspace
+      operationId: createWorkspace
+      x-speakeasy-name-override: create
+      tags:
+      - Workspaces
+      requestBody:
+        description: The workspace to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workspace'
+        required: true
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    get:
+      summary: Get workspace
+      tags:
+      - Workspaces
+      description: Get information about a particular workspace.
+      operationId: getWorkspace
+      x-speakeasy-name-override: getByID
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/details:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    post:
+      summary: Update workspace details
+      tags:
+      - Workspaces
+      description: Update information about a particular workspace.
+      operationId: updateWorkspaceDetails
+      x-speakeasy-name-override: update
+      x-speakeasy-test: false
+      requestBody:
+        description: The workspace details to update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workspace'
+        required: true
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/settings:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    get:
+      summary: Get workspace settings
+      tags:
+      - Workspaces
+      description: Get settings about a particular workspace.
+      operationId: getWorkspaceSettings
+      x-speakeasy-name-override: getSettings
+      responses:
+        2XX:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceSettings'
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+    put:
+      summary: Update workspace settings
+      tags:
+      - Workspaces
+      description: Update settings about a particular workspace.
+      operationId: updateWorkspaceSettings
+      x-speakeasy-name-override: updateSettings
+      requestBody:
+        description: The workspace settings to update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceSettings'
+        required: true
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/team:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    get:
+      summary: Get team members for a particular workspace
+      operationId: getWorkspaceTeam
+      x-speakeasy-name-override: getTeam
+      x-speakeasy-test: false
+      tags:
+      - Workspaces
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceTeamResponse'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/team/email/{email}:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    - name: email
+      in: path
+      required: true
+      description: Email of the user to grant access to.
+      schema:
+        type: string
+    put:
+      summary: Grant a user access to a particular workspace
+      operationId: grantUserAccessToWorkspace
+      x-speakeasy-name-override: grantAccess
+      x-speakeasy-test: false
+      tags:
+      - Workspaces
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceInviteResponse'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/team/{userId}:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    - name: userId
+      in: path
+      required: true
+      description: Unique identifier of the user.
+      schema:
+        type: string
+    delete:
+      summary: Revoke a user's access to a particular workspace
+      operationId: revokeUserAccessToWorkspace
+      x-speakeasy-name-override: revokeAccess
+      x-speakeasy-test: false
+      tags:
+      - Workspaces
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/tokens:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    get:
+      summary: Get tokens for a particular workspace
+      operationId: getWorkspaceTokens
+      x-speakeasy-name-override: getTokens
+      x-speakeasy-test: false
+      tags:
+      - Workspaces
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkspaceToken'
+        4XX:
+          $ref: '#/components/responses/default'
+    post:
+      summary: Create a token for a particular workspace
+      operationId: createWorkspaceToken
+      x-speakeasy-name-override: createToken
+      x-speakeasy-test: false
+      tags:
+      - Workspaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceToken'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/{workspace_id}/tokens/{tokenID}:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    - name: tokenID
+      in: path
+      required: true
+      description: Unique identifier of the token.
+      schema:
+        type: string
+    delete:
+      summary: Delete a token for a particular workspace
+      operationId: deleteWorkspaceToken
+      x-speakeasy-name-override: deleteToken
+      x-speakeasy-test: false
+      tags:
+      - Workspaces
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/feature_flags:
+    post:
+      summary: Set workspace feature flags
+      operationId: setWorkspaceFeatureFlags
+      x-speakeasy-name-override: setFeatureFlags
+      tags:
+      - Workspaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceFeatureFlagRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceFeatureFlagResponse'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/workspace/{workspace_id}/feature_flags:
+    parameters:
+    - name: workspace_id
+      in: path
+      required: true
+      description: Unique identifier of the workspace.
+      schema:
+        type: string
+    get:
+      summary: Get workspace feature flags
+      operationId: getWorkspaceFeatureFlags
+      x-speakeasy-name-override: getFeatureFlags
+      tags:
+      - Workspaces
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceFeatureFlagResponse'
+        5XX:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the user.
+        email:
+          type: string
+          description: Email address of the user.
+        email_verified:
+          type: boolean
+          description: Indicates whether the email address has been verified.
+        github_handle:
+          type: string
+          description: GitHub handle of the user.
+          nullable: true
+        display_name:
+          type: string
+          description: Display name of the user.
+        photo_url:
+          type: string
+          nullable: true
+          description: URL of the user's photo.
+        default_workspace_id:
+          type: string
+          description: Identifier of the default workspace.
+          nullable: true
+        confirmed:
+          type: boolean
+          description: Indicates whether the user has been confirmed.
+        whitelisted:
+          type: boolean
+          description: Indicates whether the user has been whitelisted.
+        last_login_at:
+          type: string
+          nullable: true
+          format: date-time
+          description: Timestamp of the last login.
+        admin:
+          type: boolean
+          description: Indicates whether the user is an admin.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the user's creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of the user's last update.
+        internal:
+          type: boolean
+          description: Indicates whether the user is internal.
+        pylon_identity_hash:
+          type: string
+          description: Hash used for pylon identity verification returned on v1/user.
+        has_created_api_key:
+          type: boolean
+          description: Indicates whether the user has created an API key. Not always populated
+      required:
+      - id
+      - email
+      - email_verified
+      - display_name
+      - confirmed
+      - whitelisted
+      - admin
+      - created_at
+      - updated_at
+    WorkspaceAndOrganization:
+      description: A workspace and organization
+      properties:
+        workspace:
+          $ref: '#/components/schemas/Workspace'
+        organization:
+          $ref: '#/components/schemas/Organization'
+      required:
+      - workspace
+      - organization
+      type: object
+    WorkspaceFeatureFlagResponse:
+      description: Workspace feature flag response
+      properties:
+        feature_flags:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureFlag'
+    WorkspaceSettings:
+      properties:
+        workspace_id:
+          type: string
+        webhook_url:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - workspace_id
+      - webhook_url
+      - created_at
+      - updated_at
+    WorkspaceInviteResponse:
+      type: object
+      description: A response for workspace user invite
+      properties:
+        relationship:
+          type: object
+          properties:
+            workspace_id:
+              type: string
+            user_id:
+              type: string
+          required:
+          - workspace_id
+          - user_id
+        invite_link:
+          nullable: true
+          type: string
+      required:
+      - relationship
+    WorkspaceFeatureFlagRequest:
+      description: A request to add workspace feature flags
+      type: object
+      properties:
+        feature_flags:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkspaceFeatureFlag'
+      required:
+      - feature_flags
+    WorkspaceToken:
+      description: A workspace token
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        workspace_id:
+          type: string
+        alg:
+          type: string
+        key:
+          type: string
+        last_used:
+          nullable: true
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          nullable: true
+        created_by_name:
+          type: string
+          nullable: true
+        created_by_photo_url:
+          type: string
+          nullable: true
+        email:
+          nullable: true
+          type: string
+      required:
+      - id
+      - name
+      - alg
+      - key
+      - created_at
+      - workspace_id
+    FeatureFlag:
+      description: A feature flag is a key-value pair that can be used to enable or disable features.
+      properties:
+        feature_flag:
+          $ref: '#/components/schemas/WorkspaceFeatureFlag'
+        trial_ends_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - feature_flag
+    SSOMetadata:
+      description: SSO metadata for a workspace
+      properties:
+        sso_activated:
+          type: boolean
+        sso_domains:
+          type: array
+          items:
+            type: string
+      required:
+      - sso_activated
+      - sso_domains
+    Organization:
+      description: A speakeasy organization
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        account_type:
+          $ref: '#/components/schemas/AccountType'
+        telemetry_disabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        free_trial_expiry:
+          type: string
+          format: date-time
+          nullable: true
+        sso_connection_id:
+          type: string
+          nullable: true
+        sso_activated:
+          type: boolean
+        internal:
+          type: boolean
+      required:
+      - id
+      - name
+      - slug
+      - account_type
+      - telemetry_disabled
+      - sso_activated
+      - created_at
+      - updated_at
+      type: object
+    WorkspaceFeatureFlag:
+      description: enum value workspace feature flag
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - schema_registry
+      - changes_report
+      - skip_schema_registry
+      - webhooks
+    AccountType:
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - free
+      - scale-up
+      - business
+      - enterprise
+    WorkspaceTeamResponse:
+      description: Workspace team response
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        sso_metadata:
+          $ref: '#/components/schemas/SSOMetadata'
+      required:
+      - users
+    Workspace:
+      description: A speakeasy workspace
+      properties:
+        created_at:
+          type: string
+          format: date-time
+        id:
+          type: string
+        name:
+          type: string
+        organization_id:
+          type: string
+        slug:
+          type: string
+        inactive:
+          type: boolean
+        telemetry_disabled:
+          deprecated: true
+          description: Deprecated. Use organization.telemetry_disabled instead.
+          type: boolean
+        updated_at:
+          type: string
+          format: date-time
+        verified:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - name
+      - organization_id
+      - slug
+      - updated_at
+      - verified
+      type: object
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

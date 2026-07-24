@@ -1,0 +1,368 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts Auth API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- description: REST APIs for managing Authentication
+  name: Auth
+paths:
+  /v1/auth/validate:
+    get:
+      summary: Validate the current api key.
+      operationId: validateApiKey
+      tags:
+      - Auth
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyDetails'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/user:
+    get:
+      summary: Get information about the current user.
+      operationId: getUser
+      tags:
+      - Auth
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/auth/access_token:
+    get:
+      summary: Get or refresh an access token for the current workspace.
+      security:
+      - {}
+      operationId: getAccessToken
+      tags:
+      - Auth
+      parameters:
+      - description: The workspace ID
+        in: query
+        name: workspace_id
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/workspace/access:
+    get:
+      summary: Get access allowances for a particular workspace
+      description: Checks if generation is permitted for a particular run of the CLI
+      operationId: getWorkspaceAccess
+      x-speakeasy-name-override: getAccess
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 100
+          maxInterval: 2000
+          maxElapsedTime: 60000
+          exponent: 1.5
+        statusCodes:
+        - 408
+        - 500
+        - 502
+        - 503
+        retryConnectionErrors: true
+      tags:
+      - Auth
+      parameters:
+      - name: genLockId
+        in: query
+        description: Unique identifier of the generation target.
+        schema:
+          type: string
+      - name: targetType
+        in: query
+        description: The type of the generated target.
+        schema:
+          type: string
+      - name: passive
+        in: query
+        description: Skip side-effects like incrementing metrics.
+        schema:
+          type: boolean
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessDetails'
+components:
+  schemas:
+    BillingAddOn:
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - webhooks
+      - sdk_testing
+      - custom_code_regions
+      - snippet_ai
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the user.
+        email:
+          type: string
+          description: Email address of the user.
+        email_verified:
+          type: boolean
+          description: Indicates whether the email address has been verified.
+        github_handle:
+          type: string
+          description: GitHub handle of the user.
+          nullable: true
+        display_name:
+          type: string
+          description: Display name of the user.
+        photo_url:
+          type: string
+          nullable: true
+          description: URL of the user's photo.
+        default_workspace_id:
+          type: string
+          description: Identifier of the default workspace.
+          nullable: true
+        confirmed:
+          type: boolean
+          description: Indicates whether the user has been confirmed.
+        whitelisted:
+          type: boolean
+          description: Indicates whether the user has been whitelisted.
+        last_login_at:
+          type: string
+          nullable: true
+          format: date-time
+          description: Timestamp of the last login.
+        admin:
+          type: boolean
+          description: Indicates whether the user is an admin.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the user's creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of the user's last update.
+        internal:
+          type: boolean
+          description: Indicates whether the user is internal.
+        pylon_identity_hash:
+          type: string
+          description: Hash used for pylon identity verification returned on v1/user.
+        has_created_api_key:
+          type: boolean
+          description: Indicates whether the user has created an API key. Not always populated
+      required:
+      - id
+      - email
+      - email_verified
+      - display_name
+      - confirmed
+      - whitelisted
+      - admin
+      - created_at
+      - updated_at
+    FeatureFlag:
+      description: A feature flag is a key-value pair that can be used to enable or disable features.
+      properties:
+        feature_flag:
+          $ref: '#/components/schemas/WorkspaceFeatureFlag'
+        trial_ends_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - feature_flag
+    AccessToken:
+      description: An AccessToken is a token that can be used to authenticate with the Speakeasy API.
+      properties:
+        access_token:
+          type: string
+        claims:
+          type: object
+        user:
+          type: object
+          properties:
+            email:
+              type: string
+            id:
+              type: string
+            display_name:
+              type: string
+            admin:
+              type: boolean
+            created_at:
+              type: string
+              format: date-time
+            email_verified:
+              type: boolean
+        workspaces:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+              account_type:
+                $ref: '#/components/schemas/AccountType'
+        feature_flags:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureFlag'
+      required:
+      - access_token
+      - claims
+      - user
+      type: object
+    WorkspaceFeatureFlag:
+      description: enum value workspace feature flag
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - schema_registry
+      - changes_report
+      - skip_schema_registry
+      - webhooks
+    AccountType:
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - free
+      - scale-up
+      - business
+      - enterprise
+    ApiKeyDetails:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+        workspace_slug:
+          type: string
+        org_slug:
+          type: string
+        generation_access_unlimited:
+          type: boolean
+        account_type_v2:
+          $ref: '#/components/schemas/AccountType'
+        enabled_features:
+          type: array
+          items:
+            type: string
+        billing_add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAddOn'
+        feature_flags:
+          deprecated: true
+          type: array
+          items:
+            type: string
+        telemetry_disabled:
+          type: boolean
+        workspace_created_at:
+          description: Workspace creation timestamp.
+          format: date-time
+          type: string
+      required:
+      - workspace_id
+      - account_type_v2
+      - enabled_features
+      - workspace_slug
+      - org_slug
+      - workspace_created_at
+      - telemetry_disabled
+      - billing_add_ons
+    AccessDetails:
+      type: object
+      properties:
+        generation_allowed:
+          type: boolean
+        message:
+          type: string
+        level:
+          type: string
+          enum:
+          - allowed
+          - warning
+          - blocked
+      required:
+      - generation_allowed
+      - message
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string

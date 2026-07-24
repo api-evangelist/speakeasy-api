@@ -1,0 +1,676 @@
+openapi: 3.0.3
+info:
+  description: The Subscriptions API manages subscriptions for CLI and registry events
+  title: Speakeasy Artifacts API
+  version: 0.4.0
+servers:
+- url: https://api.prod.speakeasy.com
+  x-speakeasy-server-id: prod
+security:
+- APIKey: []
+- WorkspaceIdentifier: []
+- Bearer: []
+tags:
+- description: REST APIs for working with Registry artifacts
+  name: Artifacts
+paths:
+  /v1/artifacts/preflight:
+    post:
+      summary: Get access token for communicating with OCI distribution endpoints
+      operationId: preflight
+      x-speakeasy-test: false
+      tags:
+      - Artifacts
+      requestBody:
+        $ref: '#/components/requestBodies/PreflightRequest'
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreflightToken'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/artifacts/namespaces:
+    get:
+      summary: Each namespace contains many revisions.
+      operationId: getNamespaces
+      tags:
+      - Artifacts
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespacesResponse'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/artifacts/namespaces/{namespace_name}/archive:
+    post:
+      summary: Set whether a namespace is archived
+      operationId: archiveNamespace
+      x-speakeasy-name-override: setArchived
+      tags:
+      - Artifacts
+      parameters:
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Archived status
+        content:
+          application/json:
+            schema:
+              properties:
+                archived:
+                  type: boolean
+                  default: true
+              type: object
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/artifacts/namespaces/{namespace_name}/revisions:
+    get:
+      operationId: getRevisions
+      tags:
+      - Artifacts
+      parameters:
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: next_page_token
+        schema:
+          type: string
+        description: Token to retrieve the next page of results
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRevisionsResponse'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/artifacts/namespaces/{namespace_name}/tags:
+    get:
+      operationId: getTags
+      tags:
+      - Artifacts
+      parameters:
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTagsResponse'
+        4XX:
+          $ref: '#/components/responses/default'
+    post:
+      summary: Add tags to an existing revision
+      operationId: postTags
+      tags:
+      - Artifacts
+      parameters:
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: A JSON representation of the tags to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTags'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/artifacts/namespaces/{namespace_name}/visibility:
+    post:
+      summary: Set visibility of a namespace with an existing metadata entry
+      operationId: setVisibility
+      tags:
+      - Artifacts
+      parameters:
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Namespace visibility
+        content:
+          application/json:
+            schema:
+              properties:
+                public:
+                  type: boolean
+              required:
+              - public
+              - tags
+              type: object
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/artifacts/remote_sources:
+    get:
+      summary: Get remote sources attached to a particular namespace
+      operationId: listRemoteSources
+      tags:
+      - Artifacts
+      parameters:
+      - in: query
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteSource'
+        4XX:
+          $ref: '#/components/responses/default'
+    post:
+      summary: Configure a new remote source
+      operationId: createRemoteSource
+      tags:
+      - Artifacts
+      requestBody:
+        description: The configuration for the remote source
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteSource'
+      responses:
+        2XX:
+          description: OK
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/oci/v2/{organization_slug}/{workspace_slug}/{namespace_name}/manifests/{revision_reference}:
+    get:
+      summary: Get manifest for a particular reference
+      operationId: getManifest
+      tags:
+      - Artifacts
+      parameters:
+      - in: header
+        name: Accept
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: organization_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: workspace_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: revision_reference
+        required: true
+        schema:
+          type: string
+        description: Tag or digest
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/vnd.oci.image.manifest.v1+json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+        4XX:
+          $ref: '#/components/responses/default'
+  /v1/oci/v2/{organization_slug}/{workspace_slug}/{namespace_name}/blobs/{digest}:
+    get:
+      summary: Get blob for a particular digest
+      operationId: getBlob
+      tags:
+      - Artifacts
+      parameters:
+      - in: path
+        name: organization_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: workspace_slug
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: namespace_name
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: digest
+        required: true
+        schema:
+          type: string
+      responses:
+        2XX:
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                format: binary
+                title: Blob
+                type: string
+        4XX:
+          $ref: '#/components/responses/default'
+components:
+  schemas:
+    GetTagsResponse:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+      required:
+      - items
+    RemoteSourceSubscriptionSettings:
+      properties:
+        base_spec_namespaces:
+          type: array
+          items:
+            type: string
+        overlay_namespaces:
+          type: array
+          items:
+            type: string
+        ignored_namespaces:
+          type: array
+          items:
+            type: string
+        output_namespace:
+          type: string
+      required:
+      - base_spec_namespaces
+      - overlay_namespaces
+      - output_namespace
+    GetRevisionsResponse:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Revision'
+        next_page_token:
+          type: string
+      required:
+      - items
+      - next_page_token
+    AddTags:
+      description: Request body of tags to add to a revision
+      properties:
+        revision_digest:
+          description: revision digest to add tags too sha256:...
+          type: string
+        tags:
+          description: string tags to add to the revision
+          items:
+            type: string
+          type: array
+      required:
+      - revision_digest
+      - tags
+      type: object
+    Manifest:
+      description: Returns the requested manifest file
+      example:
+        config:
+          digest: sha256:6d1ef012b5674ad8a127ecfa9b5e6f5178d171b90ee462846974177fd9bdd39f
+          mediaType: application/vnd.docker.container.image.v1+json
+          size: 1512
+        layers:
+        - digest: sha256:5d20c808ce198565ff70b3ed23a991dd49afac45dece63474b27ce6ed036adc6
+          mediaType: application/vnd.docker.image.rootfs.diff.tar.gzip
+          size: 2107098
+        mediaType: application/vnd.docker.distribution.manifest.v2+json
+        schemaVersion: 2
+      properties:
+        schemaVersion:
+          description: Schema version
+          type: integer
+        mediaType:
+          description: Media type usually application/vnd.docker.distribution.manifest.v2+json if this is in the accept header
+          type: string
+        artifactType:
+          description: Type of artifact
+          type: string
+        annotations:
+          $ref: '#/components/schemas/Annotations'
+        layers:
+          description: List of V2 image layer information
+          items:
+            $ref: '#/components/schemas/V2Descriptor'
+          type: array
+    RevisionContentsMetadata:
+      properties:
+        type:
+          type: string
+          enum:
+          - OPENAPI_BUNDLE
+          - OPENAPI_OVERLAY
+        workspace_id:
+          type: string
+          description: The workspace ID
+        namespace:
+          type: string
+          description: The fully qualified namespace
+        revision_digest:
+          type: string
+          description: The digest of the parent bundle
+        title:
+          type: string
+          description: The OAS title
+        description:
+          type: string
+          description: The OAS description
+        version:
+          type: string
+          description: The OAS version
+        hash:
+          type: string
+          description: The hash of the contents
+        tags:
+          type: array
+          description: The tags contained in the OAS -- NOT the OCI tags. Will be empty if the OAS is an overlay.
+          items:
+            type: string
+        operation_ids:
+          type: array
+          description: The operation IDs contained in the OAS. Will be empty if the OAS is an overlay.
+          items:
+            type: string
+        num_overlay_actions:
+          type: integer
+          description: The number of overlay actions in the OAS. Will be 0 if the OAS is not an overlay.
+        contains_code_samples:
+          type: boolean
+          description: Whether the OAS contains code samples.
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - workspace_id
+      - namespace
+      - revision_digest
+      - type
+      - title
+      - description
+      - version
+      - hash
+      - tags
+      - operation_ids
+      - num_overlay_actions
+      - contains_code_samples
+      - created_at
+    PreflightToken:
+      description: A PreflightToken is a token that allows access to the OCI distribution endpoints.
+      properties:
+        auth_token:
+          type: string
+      required:
+      - access_token
+    RemoteDocument:
+      description: A document hosted in the registry
+      properties:
+        registry_url:
+          type: string
+      required:
+      - registry_url
+    RemoteSource:
+      description: Remote source configuration
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteDocument'
+        overlays:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteDocument'
+        output:
+          $ref: '#/components/schemas/RemoteDocument'
+      required:
+      - inputs
+      - output
+    Tag:
+      properties:
+        id:
+          type: string
+          description: Format {namespace_id}/{tag}
+        name:
+          type: string
+          description: Human readable tag name
+        namespace_name:
+          type: string
+        revision_digest:
+          type: string
+      required:
+      - id
+      - name
+      - namespace_name
+      - revision_digest
+    V2Descriptor:
+      description: V2 descriptor
+      properties:
+        digest:
+          description: Digest
+          type: string
+        mediaType:
+          description: Media type
+          type: string
+        size:
+          description: Size
+          type: integer
+        annotations:
+          $ref: '#/components/schemas/Annotations'
+    Revision:
+      properties:
+        id:
+          type: string
+          description: Format {namespace_id}/{revision_digest}
+        digest:
+          type: string
+          example: sha256:6d1ef012b5674ad8a127ecfa9b5e6f5178d171b90ee462846974177fd9bdd39f
+        namespace_name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        contents_metadata:
+          $ref: '#/components/schemas/RevisionContentsMetadata'
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+        updated_at:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - id
+      - namespace_name
+      - digest
+      - tags
+      - created_at
+      - updated_at
+    Annotations:
+      description: Annotations
+      properties:
+        org.opencontainers.image.created:
+          type: string
+          description: The time the image was created
+        org.opencontainers.image.authors:
+          type: string
+          description: The authors of the image
+        org.opencontainers.image.url:
+          type: string
+          description: The URL of the image
+        org.opencontainers.image.documentation:
+          type: string
+          description: The documentation URL of the image
+        org.opencontainers.image.source:
+          type: string
+          description: The URL to get source code for building the image
+        org.opencontainers.image.version:
+          type: string
+          description: The version of the packaged software
+        org.opencontainers.image.revision:
+          type: string
+          description: Source control revision identifier
+        org.opencontainers.image.vendor:
+          type: string
+          description: Name of the distributing entity, organization or individual.
+        org.opencontainers.image.licenses:
+          type: string
+        org.opencontainers.image.ref.name:
+          type: string
+          description: Name of the reference for a target
+        org.opencontainers.image.title:
+          type: string
+          description: Human-readable title of the image
+        org.opencontainers.image.description:
+          type: string
+          description: Human-readable description of the software packaged in the image
+    Namespace:
+      description: A namespace contains many revisions.
+      properties:
+        id:
+          type: string
+          description: '{organization_slug}/{workspace_slug}/{namespace_name}'
+        name:
+          type: string
+          description: A human-readable name for the namespace.
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+        updated_at:
+          format: date-time
+          readOnly: true
+          type: string
+        public:
+          readOnly: true
+          type: boolean
+          description: Indicates whether the namespace is publicly accessible
+        archived_at:
+          format: date-time
+          readOnly: true
+          type: string
+        latest_revision_metadata:
+          $ref: '#/components/schemas/RevisionContentsMetadata'
+        composite_spec_metadata:
+          type: object
+          properties:
+            subscription_id:
+              type: string
+              readOnly: true
+              description: The subscription ID for the remote source subscription, if applicable. This indicates that the namespace is created by a remote source and thus is composite.
+            subscription_settings:
+              $ref: '#/components/schemas/RemoteSourceSubscriptionSettings'
+          required:
+          - subscription_id
+          - subscription_settings
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+    GetNamespacesResponse:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Namespace'
+      required:
+      - items
+  requestBodies:
+    PreflightRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              namespace_name:
+                type: string
+            required:
+            - namespace_name
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
+  securitySchemes:
+    APIKey:
+      description: The API Key for the workspace
+      in: header
+      name: x-api-key
+      type: apiKey
+    WorkspaceIdentifier:
+      description: The API Key for the workspace
+      in: header
+      name: x-workspace-identifier
+      type: apiKey
+    Bearer:
+      description: The Bearer token for the workspace
+      type: http
+      scheme: bearer
+externalDocs:
+  url: /docs
+  description: The Speakeasy Platform Documentation
+x-speakeasy-globals:
+  parameters:
+  - name: workspace_id
+    in: path
+    schema:
+      type: string
