@@ -1,0 +1,38 @@
+{
+  "provider": "speakeasy-api",
+  "sources": [
+    "speakeasy-api-artifacts-api-openapi.yml",
+    "speakeasy-api-auth-api-openapi.yml",
+    "speakeasy-api-codesamples-api-openapi.yml",
+    "speakeasy-api-events-api-openapi.yml",
+    "speakeasy-api-github-api-openapi.yml",
+    "speakeasy-api-organizations-api-openapi.yml",
+    "speakeasy-api-publishingtokens-api-openapi.yml",
+    "speakeasy-api-reports-api-openapi.yml",
+    "speakeasy-api-schemastore-api-openapi.yml",
+    "speakeasy-api-shorturls-api-openapi.yml",
+    "speakeasy-api-subscriptions-api-openapi.yml",
+    "speakeasy-api-suggest-api-openapi.yml",
+    "speakeasy-api-workspaces-api-openapi.yml"
+  ],
+  "outputs": [
+    "speakeasy-api-artifacts-api-openapi.yml",
+    "speakeasy-api-auth-api-openapi.yml",
+    "speakeasy-api-codesamples-api-openapi.yml",
+    "speakeasy-api-events-api-openapi.yml",
+    "speakeasy-api-github-api-openapi.yml",
+    "speakeasy-api-organizations-api-openapi.yml",
+    "speakeasy-api-publishingtokens-api-openapi.yml",
+    "speakeasy-api-reports-api-openapi.yml",
+    "speakeasy-api-schemastore-api-openapi.yml",
+    "speakeasy-api-shorturls-api-openapi.yml",
+    "speakeasy-api-subscriptions-api-openapi.yml",
+    "speakeasy-api-suggest-api-openapi.yml",
+    "speakeasy-api-workspaces-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
