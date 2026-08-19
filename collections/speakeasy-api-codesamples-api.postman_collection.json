@@ -1,0 +1,1252 @@
+{
+  "item": [
+    {
+      "id": "712a82f5-1933-4217-b5a8-c9739af0995f",
+      "name": "CodeSamples",
+      "description": {
+        "content": "REST APIs for retrieving Code Samples",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0e004c1f-5d9d-44e9-bdcc-9b226e2d9d37",
+          "name": "Retrieve usage snippets",
+          "request": {
+            "name": "Retrieve usage snippets",
+            "description": {
+              "content": "Retrieve usage snippets from an OpenAPI document stored in the registry. Supports filtering by language and operation ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "code_sample"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "registry_url",
+                  "value": "<string>",
+                  "description": "(Required) The registry URL from which to retrieve the snippets."
+                },
+                {
+                  "disabled": false,
+                  "key": "operation_ids",
+                  "value": "<string>",
+                  "description": "The operation IDs to retrieve snippets for."
+                },
+                {
+                  "disabled": false,
+                  "key": "operation_ids",
+                  "value": "<string>",
+                  "description": "The operation IDs to retrieve snippets for."
+                },
+                {
+                  "disabled": false,
+                  "key": "method_paths",
+                  "value": "{\"method\":\"<string>\",\"path\":\"<string>\"}",
+                  "description": "The method paths to retrieve snippets for."
+                },
+                {
+                  "disabled": false,
+                  "key": "method_paths",
+                  "value": "{\"method\":\"<string>\",\"path\":\"<string>\"}",
+                  "description": "The method paths to retrieve snippets for."
+                },
+                {
+                  "disabled": false,
+                  "key": "languages",
+                  "value": "<string>",
+                  "description": "The languages to retrieve snippets for."
+                },
+                {
+                  "disabled": false,
+                  "key": "languages",
+                  "value": "<string>",
+                  "description": "The languages to retrieve snippets for."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f48f7a03-c92f-4bdb-bc99-81db5fd6fa3d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "registry_url",
+                      "value": "https://spec.speakeasy.com/my-org/my-workspace/my-source"
+                    },
+                    {
+                      "key": "operation_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "operation_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "method_paths",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "languages",
+                      "value": "python"
+                    },
+                    {
+                      "key": "languages",
+                      "value": "javascript"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"snippets\": [\n    {\n      \"operationId\": \"getPetById\",\n      \"path\": \"/pet/{id}\",\n      \"method\": \"get\",\n      \"language\": \"typescript\",\n      \"code\": \"import { Petstore } from \\\"petstore-sdk\\\";\\n\\nconst petstore = new Petstore({\\n  apiKey: \\\"<YOUR_API_KEY_HERE>\\\",\\n});\\n\\nasync function run() {\\n  const result = await petstore.pet.getById({\\n    id: 137396,\\n  });\\n\\n  // Handle the result\\n  console.log(result);\\n}\\n\\nrun();\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aef778eb-ba01-48aa-a75b-88e0ef3c37e1",
+              "name": "Default error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "registry_url",
+                      "value": "https://spec.speakeasy.com/my-org/my-workspace/my-source"
+                    },
+                    {
+                      "key": "operation_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "operation_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "method_paths",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "languages",
+                      "value": "python"
+                    },
+                    {
+                      "key": "languages",
+                      "value": "javascript"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a44bd5e6-8d8f-4e15-9926-a957ce9d4bbd",
+          "name": "Generate Code Sample previews from a file and configuration parameters.",
+          "request": {
+            "name": "Generate Code Sample previews from a file and configuration parameters.",
+            "description": {
+              "content": "This endpoint generates Code Sample previews from a file and configuration parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "code_sample",
+                "preview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "schema_file",
+                  "type": "file",
+                  "description": "(Required) The OpenAPI file to be uploaded"
+                },
+                {
+                  "key": "language",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The language to generate code samples for"
+                },
+                {
+                  "key": "package_name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The name of the package"
+                },
+                {
+                  "key": "sdk_class_name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The SDK class name"
+                },
+                {
+                  "key": "operation_ids",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "type": "text",
+                  "description": "A list of operations IDs to generate code samples for"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9cc2e18a-bf07-408f-bba6-3543bbcac819",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The OpenAPI file to be uploaded",
+                        "type": "text/plain"
+                      },
+                      "key": "schema_file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The language to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "language",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The name of the package",
+                        "type": "text/plain"
+                      },
+                      "key": "package_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The SDK class name",
+                        "type": "text/plain"
+                      },
+                      "key": "sdk_class_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A list of operations IDs to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "operation_ids",
+                      "value": "[\"<string>\",\"<string>\"]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"snippets\": [\n    {\n      \"operationId\": \"getPetById\",\n      \"path\": \"/pet/{id}\",\n      \"method\": \"get\",\n      \"language\": \"typescript\",\n      \"code\": \"import { Petstore } from \\\"petstore-sdk\\\";\\n\\nconst petstore = new Petstore({\\n  apiKey: \\\"<YOUR_API_KEY_HERE>\\\",\\n});\\n\\nasync function run() {\\n  const result = await petstore.pet.getById({\\n    id: 137396,\\n  });\\n\\n  // Handle the result\\n  console.log(result);\\n}\\n\\nrun();\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9f65409-4007-41e4-9b7b-6d6f56b79dd3",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The OpenAPI file to be uploaded",
+                        "type": "text/plain"
+                      },
+                      "key": "schema_file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The language to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "language",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The name of the package",
+                        "type": "text/plain"
+                      },
+                      "key": "package_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The SDK class name",
+                        "type": "text/plain"
+                      },
+                      "key": "sdk_class_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A list of operations IDs to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "operation_ids",
+                      "value": "[\"<string>\",\"<string>\"]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10675755-9944-4cf9-a790-c413df0f6642",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The OpenAPI file to be uploaded",
+                        "type": "text/plain"
+                      },
+                      "key": "schema_file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The language to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "language",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The name of the package",
+                        "type": "text/plain"
+                      },
+                      "key": "package_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The SDK class name",
+                        "type": "text/plain"
+                      },
+                      "key": "sdk_class_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A list of operations IDs to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "operation_ids",
+                      "value": "[\"<string>\",\"<string>\"]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "398bf0eb-be26-4f50-99c7-76610e99c183",
+          "name": "Initiate asynchronous Code Sample preview generation from a file and configuration parameters, receiving an async JobID response for polling.",
+          "request": {
+            "name": "Initiate asynchronous Code Sample preview generation from a file and configuration parameters, receiving an async JobID response for polling.",
+            "description": {
+              "content": "This endpoint generates Code Sample previews from a file and configuration parameters, receiving an async JobID response for polling.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "code_sample",
+                "preview",
+                "async"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "schema_file",
+                  "value": "<binary>",
+                  "type": "text",
+                  "description": "(Required) The OpenAPI file to be uploaded"
+                },
+                {
+                  "key": "language",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The language to generate code samples for"
+                },
+                {
+                  "key": "package_name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The name of the package"
+                },
+                {
+                  "key": "sdk_class_name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The SDK class name"
+                },
+                {
+                  "key": "operation_ids",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "type": "text",
+                  "description": "A list of operations IDs to generate code samples for"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "55541aef-0ee8-4759-aa65-30a3bfda9321",
+              "name": "Job accepted, returns a job ID to poll for status and result",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The OpenAPI file to be uploaded",
+                        "type": "text/plain"
+                      },
+                      "key": "schema_file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The language to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "language",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The name of the package",
+                        "type": "text/plain"
+                      },
+                      "key": "package_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The SDK class name",
+                        "type": "text/plain"
+                      },
+                      "key": "sdk_class_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A list of operations IDs to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "operation_ids",
+                      "value": "[\"<string>\",\"<string>\"]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"job_id\": \"string\",\n  \"status\": \"running\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adeb3b60-8c64-4e2f-9571-a32edc7a12d7",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The OpenAPI file to be uploaded",
+                        "type": "text/plain"
+                      },
+                      "key": "schema_file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The language to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "language",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The name of the package",
+                        "type": "text/plain"
+                      },
+                      "key": "package_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The SDK class name",
+                        "type": "text/plain"
+                      },
+                      "key": "sdk_class_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A list of operations IDs to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "operation_ids",
+                      "value": "[\"<string>\",\"<string>\"]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7db5cb50-238d-43b0-b2ee-05110eaf62ed",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The OpenAPI file to be uploaded",
+                        "type": "text/plain"
+                      },
+                      "key": "schema_file",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The language to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "language",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The name of the package",
+                        "type": "text/plain"
+                      },
+                      "key": "package_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The SDK class name",
+                        "type": "text/plain"
+                      },
+                      "key": "sdk_class_name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A list of operations IDs to generate code samples for",
+                        "type": "text/plain"
+                      },
+                      "key": "operation_ids",
+                      "value": "[\"<string>\",\"<string>\"]",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b748ff26-42af-44cc-9d65-d15aef70cd28",
+          "name": "Poll for the result of an asynchronous Code Sample preview generation.",
+          "request": {
+            "name": "Poll for the result of an asynchronous Code Sample preview generation.",
+            "description": {
+              "content": "Poll for the result of an asynchronous Code Sample preview generation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "code_sample",
+                "preview",
+                "async",
+                ":jobID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "jobID",
+                  "description": "(Required) The ID of the job to check the status and retrieve results"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6dff609a-32eb-45de-abf9-190dcbbeb0f8",
+              "name": "Job is still in progress",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async",
+                    ":jobID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobID",
+                      "description": "(Required) The ID of the job to check the status and retrieve results"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"running\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "affad71a-ef14-4b2c-a8a5-ee699c9bed88",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async",
+                    ":jobID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobID",
+                      "description": "(Required) The ID of the job to check the status and retrieve results"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"snippets\": [\n    {\n      \"operationId\": \"getPetById\",\n      \"path\": \"/pet/{id}\",\n      \"method\": \"get\",\n      \"language\": \"typescript\",\n      \"code\": \"import { Petstore } from \\\"petstore-sdk\\\";\\n\\nconst petstore = new Petstore({\\n  apiKey: \\\"<YOUR_API_KEY_HERE>\\\",\\n});\\n\\nasync function run() {\\n  const result = await petstore.pet.getById({\\n    id: 137396,\\n  });\\n\\n  // Handle the result\\n  console.log(result);\\n}\\n\\nrun();\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f2595f6-f0ac-4100-a548-b99a1deb1422",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async",
+                    ":jobID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobID",
+                      "description": "(Required) The ID of the job to check the status and retrieve results"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72acb2d8-4890-4757-b9ea-4abef2ad2a7c",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "code_sample",
+                    "preview",
+                    "async",
+                    ":jobID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobID",
+                      "description": "(Required) The ID of the job to check the status and retrieve results"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 7526\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.prod.speakeasy.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4feaa34a-0521-4c0e-8679-dfe60cd79535",
+    "name": "Speakeasy Artifacts CodeSamples API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Subscriptions API manages subscriptions for CLI and registry events",
+      "type": "text/plain"
+    }
+  }
+}

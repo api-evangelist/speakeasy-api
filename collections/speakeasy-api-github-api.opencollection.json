@@ -1,0 +1,244 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Github API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Github",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getGithubSetupState",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/github/setup",
+            "params": [
+              {
+                "name": "org",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "generate_gen_lock_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "checkGithubAccess",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/github/check_access",
+            "params": [
+              {
+                "name": "org",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "linkGithubAccess",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/github/link",
+            "params": [
+              {
+                "name": "installation_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "github_org",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "github_oidc_token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "githubCheckPublishingPRs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/github/publishing_prs",
+            "params": [
+              {
+                "name": "generate_gen_lock_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "org",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "githubCheckPublishingSecrets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/github/publishing_secrets",
+            "params": [
+              {
+                "name": "generate_gen_lock_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "githubStorePublishingSecrets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/github/publishing_secrets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "githubConfigureCodeSamples",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/github/configure_code_samples",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "githubConfigureMintlifyRepo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/github/configure_mintlify_repo",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "githubConfigureTarget",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/github/configure_target",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "githubTriggerAction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/github/trigger_action",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          }
+        },
+        {
+          "info": {
+            "name": "getGitHubAction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/github/action",
+            "params": [
+              {
+                "name": "targetName",
+                "value": "",
+                "type": "query",
+                "description": "The targetName of the workflow target."
+              },
+              {
+                "name": "org",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "repo",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

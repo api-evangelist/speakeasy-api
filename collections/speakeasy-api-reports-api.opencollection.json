@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Reports API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload a report.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/reports",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "data",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Upload a report."
+        },
+        {
+          "info": {
+            "name": "Get the signed access url for the linting reports for a particular document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/reports/linting/:documentChecksum",
+            "params": [
+              {
+                "name": "documentChecksum",
+                "value": "",
+                "type": "path",
+                "description": "The checksum of the document to retrieve the signed access url for."
+              }
+            ]
+          },
+          "docs": "Get the signed access url for the linting reports for a particular document."
+        },
+        {
+          "info": {
+            "name": "Get the signed access url for the change reports for a particular document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/reports/changes/:documentChecksum",
+            "params": [
+              {
+                "name": "documentChecksum",
+                "value": "",
+                "type": "path",
+                "description": "The checksum of the document to retrieve the signed access url for."
+              }
+            ]
+          },
+          "docs": "Get the signed access url for the change reports for a particular document."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

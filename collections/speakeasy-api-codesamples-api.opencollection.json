@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts CodeSamples API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CodeSamples",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve usage snippets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/code_sample",
+            "params": [
+              {
+                "name": "registry_url",
+                "value": "https://spec.speakeasy.com/my-org/my-workspace/my-source",
+                "type": "query",
+                "description": "The registry URL from which to retrieve the snippets."
+              },
+              {
+                "name": "operation_ids",
+                "value": "getPets",
+                "type": "query",
+                "description": "The operation IDs to retrieve snippets for."
+              },
+              {
+                "name": "method_paths",
+                "value": "[object Object]",
+                "type": "query",
+                "description": "The method paths to retrieve snippets for."
+              },
+              {
+                "name": "languages",
+                "value": "python,javascript",
+                "type": "query",
+                "description": "The languages to retrieve snippets for."
+              }
+            ]
+          },
+          "docs": "Retrieve usage snippets from an OpenAPI document stored in the registry. Supports filtering by language and operation ID."
+        },
+        {
+          "info": {
+            "name": "Generate Code Sample previews from a file and configuration parameters.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/code_sample/preview",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "This endpoint generates Code Sample previews from a file and configuration parameters."
+        },
+        {
+          "info": {
+            "name": "Initiate asynchronous Code Sample preview generation from a file and configuration parameters, receiving an async JobID response for polling.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/code_sample/preview/async",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "This endpoint generates Code Sample previews from a file and configuration parameters, receiving an async JobID response for polling."
+        },
+        {
+          "info": {
+            "name": "Poll for the result of an asynchronous Code Sample preview generation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/code_sample/preview/async/:jobID",
+            "params": [
+              {
+                "name": "jobID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the job to check the status and retrieve results"
+              }
+            ]
+          },
+          "docs": "Poll for the result of an asynchronous Code Sample preview generation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

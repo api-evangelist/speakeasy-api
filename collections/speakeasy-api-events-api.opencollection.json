@@ -1,0 +1,191 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Events API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "searchWorkspaceEvents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/events",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              },
+              {
+                "name": "source_revision_digest",
+                "value": "",
+                "type": "query",
+                "description": "Unique identifier of the source revision digest."
+              },
+              {
+                "name": "lint_report_digest",
+                "value": "",
+                "type": "query",
+                "description": "Unique identifier of the lint report digest."
+              },
+              {
+                "name": "openapi_diff_report_digest",
+                "value": "",
+                "type": "query",
+                "description": "Unique identifier of the openapi diff report digest."
+              },
+              {
+                "name": "interaction_type",
+                "value": "",
+                "type": "query",
+                "description": "Specified interaction type for events."
+              },
+              {
+                "name": "generate_gen_lock_id",
+                "value": "",
+                "type": "query",
+                "description": "A specific gen lock ID for the events."
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "query",
+                "description": "Shared execution ID for cli events across a single action."
+              },
+              {
+                "name": "success",
+                "value": "",
+                "type": "query",
+                "description": "Whether the event was successful or not."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return."
+              }
+            ]
+          },
+          "docs": "Search events for a particular workspace by any field"
+        },
+        {
+          "info": {
+            "name": "Post events for a specific workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/events",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends an array of events to be stored for a particular workspace."
+        },
+        {
+          "info": {
+            "name": "getWorkspaceEventsByTarget",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/events/targets/:target_id/events",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              },
+              {
+                "name": "target_id",
+                "value": "",
+                "type": "path",
+                "description": "Filter to only return events corresponding to a particular gen_lock_id (gen_lock_id uniquely identifies a target)"
+              },
+              {
+                "name": "after_created_at",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only return events created after this timestamp"
+              }
+            ]
+          },
+          "docs": "Load recent events for a particular workspace"
+        },
+        {
+          "info": {
+            "name": "getWorkspaceTargets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/events/targets",
+            "params": [
+              {
+                "name": "after_last_event_created_at",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only return targets with events created after this timestamp"
+              }
+            ]
+          },
+          "docs": "Load targets for a particular workspace"
+        },
+        {
+          "info": {
+            "name": "getWorkspaceTargetsDeprecated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/events/targets",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              },
+              {
+                "name": "after_last_event_created_at",
+                "value": "",
+                "type": "query",
+                "description": "Filter to only return targets with events created after this timestamp"
+              }
+            ]
+          },
+          "docs": "Load targets for a particular workspace"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

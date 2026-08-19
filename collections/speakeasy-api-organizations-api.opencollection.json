@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Organizations API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get organizations for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/organizations"
+          },
+          "docs": "Returns a list of organizations a user has access too"
+        },
+        {
+          "info": {
+            "name": "Create an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/organization",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an organization"
+        },
+        {
+          "info": {
+            "name": "Get organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/organization/:organizationID",
+            "params": [
+              {
+                "name": "organizationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the organization."
+              }
+            ]
+          },
+          "docs": "Get information about a particular organization."
+        },
+        {
+          "info": {
+            "name": "Create a free trial for an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/organization/free_trial"
+          },
+          "docs": "Creates a free trial for an organization"
+        },
+        {
+          "info": {
+            "name": "Get billing usage summary for a particular organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/organization/usage"
+          },
+          "docs": "Returns a billing usage summary by target languages for a particular organization"
+        },
+        {
+          "info": {
+            "name": "Get billing add ons",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/organization/add_ons"
+          },
+          "docs": "Get billing add ons"
+        },
+        {
+          "info": {
+            "name": "Create billing add ons",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/organization/add_ons",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create billing add ons"
+        },
+        {
+          "info": {
+            "name": "Delete billing add ons",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.prod.speakeasy.com/v1/organization/add_ons/:add_on",
+            "params": [
+              {
+                "name": "add_on",
+                "value": "",
+                "type": "path",
+                "description": "The specific add-on to delete."
+              }
+            ]
+          },
+          "docs": "Delete billing add ons"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

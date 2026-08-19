@@ -1,0 +1,128 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Suggest API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Suggest",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "(DEPRECATED) Generate suggestions for improving an OpenAPI document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/suggest/openapi",
+            "headers": [
+              {
+                "name": "x-session-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "opts",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "schema",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Get suggestions from an LLM model for improving an OpenAPI document."
+        },
+        {
+          "info": {
+            "name": "Generate suggestions for improving an OpenAPI document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/suggest/openapi_from_summary",
+            "headers": [
+              {
+                "name": "x-session-id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get suggestions from an LLM model for improving an OpenAPI document."
+        },
+        {
+          "info": {
+            "name": "Generate generic suggestions for a list of items.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/suggest/items",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate generic suggestions for a list of items."
+        },
+        {
+          "info": {
+            "name": "Generate suggestions for improving an OpenAPI document stored in the registry.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/suggest/openapi/:namespace_name/:revision_reference",
+            "headers": [
+              {
+                "name": "x-session-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "namespace_name",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "revision_reference",
+                "value": "",
+                "type": "path",
+                "description": "Tag or digest"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get suggestions from an LLM model for improving an OpenAPI document stored in the registry."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

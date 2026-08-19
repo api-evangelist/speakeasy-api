@@ -1,0 +1,1019 @@
+{
+  "item": [
+    {
+      "id": "d45c7968-e7cb-4b7d-9125-9f9baf294b50",
+      "name": "Events",
+      "description": {
+        "content": "REST APIs for managing events captured by a speakeasy binary (CLI, GitHub Action etc)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "16edb038-1b93-4369-bb09-28feeb4838b4",
+          "name": "search Workspace Events",
+          "request": {
+            "name": "search Workspace Events",
+            "description": {
+              "content": "Search events for a particular workspace by any field",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workspace",
+                ":workspace_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "source_revision_digest",
+                  "value": "<string>",
+                  "description": "Unique identifier of the source revision digest."
+                },
+                {
+                  "disabled": false,
+                  "key": "lint_report_digest",
+                  "value": "<string>",
+                  "description": "Unique identifier of the lint report digest."
+                },
+                {
+                  "disabled": false,
+                  "key": "openapi_diff_report_digest",
+                  "value": "<string>",
+                  "description": "Unique identifier of the openapi diff report digest."
+                },
+                {
+                  "disabled": false,
+                  "key": "interaction_type",
+                  "value": "<string>",
+                  "description": "Specified interaction type for events."
+                },
+                {
+                  "disabled": false,
+                  "key": "generate_gen_lock_id",
+                  "value": "<string>",
+                  "description": "A specific gen lock ID for the events."
+                },
+                {
+                  "disabled": false,
+                  "key": "execution_id",
+                  "value": "<string>",
+                  "description": "Shared execution ID for cli events across a single action."
+                },
+                {
+                  "disabled": false,
+                  "key": "success",
+                  "value": "<boolean>",
+                  "description": "Whether the event was successful or not."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Number of results to return."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace_id",
+                  "description": "(Required) Unique identifier of the workspace."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6c3552c7-e867-4f00-b2dc-e18c63948a5c",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source_revision_digest",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lint_report_digest",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "openapi_diff_report_digest",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interaction_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "generate_gen_lock_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "execution_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "success",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"execution_id\": \"string\",\n    \"workspace_id\": \"string\",\n    \"speakeasy_api_key_name\": \"string\",\n    \"interaction_type\": \"<string>\",\n    \"local_started_at\": \"1947-10-11T22:40:07.203Z\",\n    \"created_at\": \"1961-06-07T08:40:48.439Z\",\n    \"speakeasy_version\": \"string\",\n    \"success\": true,\n    \"local_completed_at\": \"2023-10-17T01:39:34.841Z\",\n    \"raw_command\": \"string\",\n    \"duration_ms\": 8765,\n    \"continuous_integration_environment\": \"string\",\n    \"gh_action_run_link\": \"string\",\n    \"gh_action_version\": \"string\",\n    \"gh_action_organization\": \"string\",\n    \"gh_pull_request\": \"string\",\n    \"gh_changes_committed\": false,\n    \"gh_action_ref\": \"string\",\n    \"gh_action_repository\": \"string\",\n    \"repo_label\": \"string\",\n    \"commit_head\": \"string\",\n    \"hostname\": \"string\",\n    \"git_user_name\": \"string\",\n    \"git_user_email\": \"string\",\n    \"git_remote_default_owner\": \"string\",\n    \"git_remote_default_repo\": \"string\",\n    \"git_relative_cwd\": \"string\",\n    \"generate_target\": \"string\",\n    \"generate_target_name\": \"string\",\n    \"generate_target_version\": \"string\",\n    \"generate_gen_lock_id\": \"string\",\n    \"management_doc_checksum\": \"string\",\n    \"management_doc_version\": \"string\",\n    \"generate_version\": \"string\",\n    \"generate_output_tests\": true,\n    \"generate_config_pre_raw\": \"string\",\n    \"generate_config_post_raw\": \"string\",\n    \"generate_config_pre_version\": \"string\",\n    \"generate_config_post_version\": \"string\",\n    \"generate_config_pre_checksum\": \"string\",\n    \"generate_config_post_checksum\": \"string\",\n    \"generate_eligible_features\": \"string\",\n    \"generate_gen_lock_pre_features\": \"string\",\n    \"generate_gen_lock_post_features\": \"string\",\n    \"generate_gen_lock_pre_doc_version\": \"string\",\n    \"generate_gen_lock_pre_doc_checksum\": \"string\",\n    \"generate_gen_lock_pre_version\": \"string\",\n    \"generate_gen_lock_pre_revision_digest\": \"string\",\n    \"generate_gen_lock_pre_blob_digest\": \"string\",\n    \"generate_gen_lock_pre_namespace_name\": \"string\",\n    \"generate_bump_type\": \"major\",\n    \"generate_number_of_operations_ignored\": 7713,\n    \"generate_number_of_operations_used\": 2617,\n    \"generate_number_of_terraform_resources\": 6250,\n    \"generate_published\": true,\n    \"generate_repo_url\": \"string\",\n    \"publish_package_url\": \"string\",\n    \"publish_package_name\": \"string\",\n    \"publish_package_version\": \"string\",\n    \"publish_package_registry_name\": \"string\",\n    \"source_revision_digest\": \"string\",\n    \"source_blob_digest\": \"string\",\n    \"source_namespace_name\": \"string\",\n    \"lint_report_digest\": \"string\",\n    \"lint_report_error_count\": 5661,\n    \"lint_report_warning_count\": 8958,\n    \"lint_report_info_count\": 4123,\n    \"openapi_diff_report_digest\": \"string\",\n    \"openapi_diff_base_source_revision_digest\": \"string\",\n    \"openapi_diff_base_source_blob_digest\": \"string\",\n    \"openapi_diff_base_source_namespace_name\": \"string\",\n    \"openapi_diff_breaking_changes_count\": 579,\n    \"openapi_diff_bump_type\": \"minor\",\n    \"error\": \"string\",\n    \"mermaid_diagram\": \"string\",\n    \"last_step\": \"string\",\n    \"test_report_raw\": \"string\",\n    \"workflow_pre_raw\": \"string\",\n    \"workflow_post_raw\": \"string\",\n    \"workflow_lock_pre_raw\": \"string\",\n    \"workflow_lock_post_raw\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab50e835-1ec6-4847-8754-c1dae10be371",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "source_revision_digest",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lint_report_digest",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "openapi_diff_report_digest",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interaction_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "generate_gen_lock_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "execution_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "success",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 2623\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c2d606df-3ac1-4a97-9ee2-75b9f7230351",
+          "name": "Post events for a specific workspace",
+          "request": {
+            "name": "Post events for a specific workspace",
+            "description": {
+              "content": "Sends an array of events to be stored for a particular workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workspace",
+                ":workspace_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace_id",
+                  "description": "(Required) Unique identifier of the workspace."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"id\": \"<string>\",\n    \"execution_id\": \"<string>\",\n    \"workspace_id\": \"<string>\",\n    \"speakeasy_api_key_name\": \"<string>\",\n    \"interaction_type\": \"<string>\",\n    \"local_started_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"speakeasy_version\": \"<string>\",\n    \"success\": \"<boolean>\",\n    \"local_completed_at\": \"<dateTime>\",\n    \"raw_command\": \"<string>\",\n    \"duration_ms\": \"<integer>\",\n    \"continuous_integration_environment\": \"<string>\",\n    \"gh_action_run_link\": \"<string>\",\n    \"gh_action_version\": \"<string>\",\n    \"gh_action_organization\": \"<string>\",\n    \"gh_pull_request\": \"<string>\",\n    \"gh_changes_committed\": \"<boolean>\",\n    \"gh_action_ref\": \"<string>\",\n    \"gh_action_repository\": \"<string>\",\n    \"repo_label\": \"<string>\",\n    \"commit_head\": \"<string>\",\n    \"hostname\": \"<string>\",\n    \"git_user_name\": \"<string>\",\n    \"git_user_email\": \"<string>\",\n    \"git_remote_default_owner\": \"<string>\",\n    \"git_remote_default_repo\": \"<string>\",\n    \"git_relative_cwd\": \"<string>\",\n    \"generate_target\": \"<string>\",\n    \"generate_target_name\": \"<string>\",\n    \"generate_target_version\": \"<string>\",\n    \"generate_gen_lock_id\": \"<string>\",\n    \"management_doc_checksum\": \"<string>\",\n    \"management_doc_version\": \"<string>\",\n    \"generate_version\": \"<string>\",\n    \"generate_output_tests\": \"<boolean>\",\n    \"generate_config_pre_raw\": \"<string>\",\n    \"generate_config_post_raw\": \"<string>\",\n    \"generate_config_pre_version\": \"<string>\",\n    \"generate_config_post_version\": \"<string>\",\n    \"generate_config_pre_checksum\": \"<string>\",\n    \"generate_config_post_checksum\": \"<string>\",\n    \"generate_eligible_features\": \"<string>\",\n    \"generate_gen_lock_pre_features\": \"<string>\",\n    \"generate_gen_lock_post_features\": \"<string>\",\n    \"generate_gen_lock_pre_doc_version\": \"<string>\",\n    \"generate_gen_lock_pre_doc_checksum\": \"<string>\",\n    \"generate_gen_lock_pre_version\": \"<string>\",\n    \"generate_gen_lock_pre_revision_digest\": \"<string>\",\n    \"generate_gen_lock_pre_blob_digest\": \"<string>\",\n    \"generate_gen_lock_pre_namespace_name\": \"<string>\",\n    \"generate_bump_type\": \"<string>\",\n    \"generate_number_of_operations_ignored\": \"<integer>\",\n    \"generate_number_of_operations_used\": \"<integer>\",\n    \"generate_number_of_terraform_resources\": \"<integer>\",\n    \"generate_published\": \"<boolean>\",\n    \"generate_repo_url\": \"<string>\",\n    \"publish_package_url\": \"<string>\",\n    \"publish_package_name\": \"<string>\",\n    \"publish_package_version\": \"<string>\",\n    \"publish_package_registry_name\": \"<string>\",\n    \"source_revision_digest\": \"<string>\",\n    \"source_blob_digest\": \"<string>\",\n    \"source_namespace_name\": \"<string>\",\n    \"lint_report_digest\": \"<string>\",\n    \"lint_report_error_count\": \"<integer>\",\n    \"lint_report_warning_count\": \"<integer>\",\n    \"lint_report_info_count\": \"<integer>\",\n    \"openapi_diff_report_digest\": \"<string>\",\n    \"openapi_diff_base_source_revision_digest\": \"<string>\",\n    \"openapi_diff_base_source_blob_digest\": \"<string>\",\n    \"openapi_diff_base_source_namespace_name\": \"<string>\",\n    \"openapi_diff_breaking_changes_count\": \"<integer>\",\n    \"openapi_diff_bump_type\": \"<string>\",\n    \"error\": \"<string>\",\n    \"mermaid_diagram\": \"<string>\",\n    \"last_step\": \"<string>\",\n    \"test_report_raw\": \"<string>\",\n    \"workflow_pre_raw\": \"<string>\",\n    \"workflow_post_raw\": \"<string>\",\n    \"workflow_lock_pre_raw\": \"<string>\",\n    \"workflow_lock_post_raw\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "11876f4d-da54-4ae0-b592-78ac3e6c5725",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"id\": \"<string>\",\n    \"execution_id\": \"<string>\",\n    \"workspace_id\": \"<string>\",\n    \"speakeasy_api_key_name\": \"<string>\",\n    \"interaction_type\": \"<string>\",\n    \"local_started_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"speakeasy_version\": \"<string>\",\n    \"success\": \"<boolean>\",\n    \"local_completed_at\": \"<dateTime>\",\n    \"raw_command\": \"<string>\",\n    \"duration_ms\": \"<integer>\",\n    \"continuous_integration_environment\": \"<string>\",\n    \"gh_action_run_link\": \"<string>\",\n    \"gh_action_version\": \"<string>\",\n    \"gh_action_organization\": \"<string>\",\n    \"gh_pull_request\": \"<string>\",\n    \"gh_changes_committed\": \"<boolean>\",\n    \"gh_action_ref\": \"<string>\",\n    \"gh_action_repository\": \"<string>\",\n    \"repo_label\": \"<string>\",\n    \"commit_head\": \"<string>\",\n    \"hostname\": \"<string>\",\n    \"git_user_name\": \"<string>\",\n    \"git_user_email\": \"<string>\",\n    \"git_remote_default_owner\": \"<string>\",\n    \"git_remote_default_repo\": \"<string>\",\n    \"git_relative_cwd\": \"<string>\",\n    \"generate_target\": \"<string>\",\n    \"generate_target_name\": \"<string>\",\n    \"generate_target_version\": \"<string>\",\n    \"generate_gen_lock_id\": \"<string>\",\n    \"management_doc_checksum\": \"<string>\",\n    \"management_doc_version\": \"<string>\",\n    \"generate_version\": \"<string>\",\n    \"generate_output_tests\": \"<boolean>\",\n    \"generate_config_pre_raw\": \"<string>\",\n    \"generate_config_post_raw\": \"<string>\",\n    \"generate_config_pre_version\": \"<string>\",\n    \"generate_config_post_version\": \"<string>\",\n    \"generate_config_pre_checksum\": \"<string>\",\n    \"generate_config_post_checksum\": \"<string>\",\n    \"generate_eligible_features\": \"<string>\",\n    \"generate_gen_lock_pre_features\": \"<string>\",\n    \"generate_gen_lock_post_features\": \"<string>\",\n    \"generate_gen_lock_pre_doc_version\": \"<string>\",\n    \"generate_gen_lock_pre_doc_checksum\": \"<string>\",\n    \"generate_gen_lock_pre_version\": \"<string>\",\n    \"generate_gen_lock_pre_revision_digest\": \"<string>\",\n    \"generate_gen_lock_pre_blob_digest\": \"<string>\",\n    \"generate_gen_lock_pre_namespace_name\": \"<string>\",\n    \"generate_bump_type\": \"<string>\",\n    \"generate_number_of_operations_ignored\": \"<integer>\",\n    \"generate_number_of_operations_used\": \"<integer>\",\n    \"generate_number_of_terraform_resources\": \"<integer>\",\n    \"generate_published\": \"<boolean>\",\n    \"generate_repo_url\": \"<string>\",\n    \"publish_package_url\": \"<string>\",\n    \"publish_package_name\": \"<string>\",\n    \"publish_package_version\": \"<string>\",\n    \"publish_package_registry_name\": \"<string>\",\n    \"source_revision_digest\": \"<string>\",\n    \"source_blob_digest\": \"<string>\",\n    \"source_namespace_name\": \"<string>\",\n    \"lint_report_digest\": \"<string>\",\n    \"lint_report_error_count\": \"<integer>\",\n    \"lint_report_warning_count\": \"<integer>\",\n    \"lint_report_info_count\": \"<integer>\",\n    \"openapi_diff_report_digest\": \"<string>\",\n    \"openapi_diff_base_source_revision_digest\": \"<string>\",\n    \"openapi_diff_base_source_blob_digest\": \"<string>\",\n    \"openapi_diff_base_source_namespace_name\": \"<string>\",\n    \"openapi_diff_breaking_changes_count\": \"<integer>\",\n    \"openapi_diff_bump_type\": \"<string>\",\n    \"error\": \"<string>\",\n    \"mermaid_diagram\": \"<string>\",\n    \"last_step\": \"<string>\",\n    \"test_report_raw\": \"<string>\",\n    \"workflow_pre_raw\": \"<string>\",\n    \"workflow_post_raw\": \"<string>\",\n    \"workflow_lock_pre_raw\": \"<string>\",\n    \"workflow_lock_post_raw\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8caf811d-e233-4674-b3e0-68fe5a1249dc",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"id\": \"<string>\",\n    \"execution_id\": \"<string>\",\n    \"workspace_id\": \"<string>\",\n    \"speakeasy_api_key_name\": \"<string>\",\n    \"interaction_type\": \"<string>\",\n    \"local_started_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"speakeasy_version\": \"<string>\",\n    \"success\": \"<boolean>\",\n    \"local_completed_at\": \"<dateTime>\",\n    \"raw_command\": \"<string>\",\n    \"duration_ms\": \"<integer>\",\n    \"continuous_integration_environment\": \"<string>\",\n    \"gh_action_run_link\": \"<string>\",\n    \"gh_action_version\": \"<string>\",\n    \"gh_action_organization\": \"<string>\",\n    \"gh_pull_request\": \"<string>\",\n    \"gh_changes_committed\": \"<boolean>\",\n    \"gh_action_ref\": \"<string>\",\n    \"gh_action_repository\": \"<string>\",\n    \"repo_label\": \"<string>\",\n    \"commit_head\": \"<string>\",\n    \"hostname\": \"<string>\",\n    \"git_user_name\": \"<string>\",\n    \"git_user_email\": \"<string>\",\n    \"git_remote_default_owner\": \"<string>\",\n    \"git_remote_default_repo\": \"<string>\",\n    \"git_relative_cwd\": \"<string>\",\n    \"generate_target\": \"<string>\",\n    \"generate_target_name\": \"<string>\",\n    \"generate_target_version\": \"<string>\",\n    \"generate_gen_lock_id\": \"<string>\",\n    \"management_doc_checksum\": \"<string>\",\n    \"management_doc_version\": \"<string>\",\n    \"generate_version\": \"<string>\",\n    \"generate_output_tests\": \"<boolean>\",\n    \"generate_config_pre_raw\": \"<string>\",\n    \"generate_config_post_raw\": \"<string>\",\n    \"generate_config_pre_version\": \"<string>\",\n    \"generate_config_post_version\": \"<string>\",\n    \"generate_config_pre_checksum\": \"<string>\",\n    \"generate_config_post_checksum\": \"<string>\",\n    \"generate_eligible_features\": \"<string>\",\n    \"generate_gen_lock_pre_features\": \"<string>\",\n    \"generate_gen_lock_post_features\": \"<string>\",\n    \"generate_gen_lock_pre_doc_version\": \"<string>\",\n    \"generate_gen_lock_pre_doc_checksum\": \"<string>\",\n    \"generate_gen_lock_pre_version\": \"<string>\",\n    \"generate_gen_lock_pre_revision_digest\": \"<string>\",\n    \"generate_gen_lock_pre_blob_digest\": \"<string>\",\n    \"generate_gen_lock_pre_namespace_name\": \"<string>\",\n    \"generate_bump_type\": \"<string>\",\n    \"generate_number_of_operations_ignored\": \"<integer>\",\n    \"generate_number_of_operations_used\": \"<integer>\",\n    \"generate_number_of_terraform_resources\": \"<integer>\",\n    \"generate_published\": \"<boolean>\",\n    \"generate_repo_url\": \"<string>\",\n    \"publish_package_url\": \"<string>\",\n    \"publish_package_name\": \"<string>\",\n    \"publish_package_version\": \"<string>\",\n    \"publish_package_registry_name\": \"<string>\",\n    \"source_revision_digest\": \"<string>\",\n    \"source_blob_digest\": \"<string>\",\n    \"source_namespace_name\": \"<string>\",\n    \"lint_report_digest\": \"<string>\",\n    \"lint_report_error_count\": \"<integer>\",\n    \"lint_report_warning_count\": \"<integer>\",\n    \"lint_report_info_count\": \"<integer>\",\n    \"openapi_diff_report_digest\": \"<string>\",\n    \"openapi_diff_base_source_revision_digest\": \"<string>\",\n    \"openapi_diff_base_source_blob_digest\": \"<string>\",\n    \"openapi_diff_base_source_namespace_name\": \"<string>\",\n    \"openapi_diff_breaking_changes_count\": \"<integer>\",\n    \"openapi_diff_bump_type\": \"<string>\",\n    \"error\": \"<string>\",\n    \"mermaid_diagram\": \"<string>\",\n    \"last_step\": \"<string>\",\n    \"test_report_raw\": \"<string>\",\n    \"workflow_pre_raw\": \"<string>\",\n    \"workflow_post_raw\": \"<string>\",\n    \"workflow_lock_pre_raw\": \"<string>\",\n    \"workflow_lock_post_raw\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 2623\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e036d7f9-3d3d-4963-a48e-6d4121788dfd",
+          "name": "get Workspace Events By Target",
+          "request": {
+            "name": "get Workspace Events By Target",
+            "description": {
+              "content": "Load recent events for a particular workspace",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workspace",
+                ":workspace_id",
+                "events",
+                "targets",
+                ":target_id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after_created_at",
+                  "value": "<dateTime>",
+                  "description": "Filter to only return events created after this timestamp"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace_id",
+                  "description": "(Required) Unique identifier of the workspace."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "target_id",
+                  "description": "(Required) Filter to only return events corresponding to a particular gen_lock_id (gen_lock_id uniquely identifies a target)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5151d820-1b37-4c92-a92c-ee3c193f66fb",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events",
+                    "targets",
+                    ":target_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after_created_at",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "target_id",
+                      "description": "(Required) Filter to only return events corresponding to a particular gen_lock_id (gen_lock_id uniquely identifies a target)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"<string>\",\n    \"execution_id\": \"<string>\",\n    \"workspace_id\": \"<string>\",\n    \"speakeasy_api_key_name\": \"<string>\",\n    \"interaction_type\": \"<string>\",\n    \"local_started_at\": \"<dateTime>\",\n    \"created_at\": \"<dateTime>\",\n    \"speakeasy_version\": \"<string>\",\n    \"success\": \"<boolean>\",\n    \"local_completed_at\": \"<dateTime>\",\n    \"raw_command\": \"<string>\",\n    \"duration_ms\": \"<integer>\",\n    \"continuous_integration_environment\": \"<string>\",\n    \"gh_action_run_link\": \"<string>\",\n    \"gh_action_version\": \"<string>\",\n    \"gh_action_organization\": \"<string>\",\n    \"gh_pull_request\": \"<string>\",\n    \"gh_changes_committed\": \"<boolean>\",\n    \"gh_action_ref\": \"<string>\",\n    \"gh_action_repository\": \"<string>\",\n    \"repo_label\": \"<string>\",\n    \"commit_head\": \"<string>\",\n    \"hostname\": \"<string>\",\n    \"git_user_name\": \"<string>\",\n    \"git_user_email\": \"<string>\",\n    \"git_remote_default_owner\": \"<string>\",\n    \"git_remote_default_repo\": \"<string>\",\n    \"git_relative_cwd\": \"<string>\",\n    \"generate_target\": \"<string>\",\n    \"generate_target_name\": \"<string>\",\n    \"generate_target_version\": \"<string>\",\n    \"generate_gen_lock_id\": \"<string>\",\n    \"management_doc_checksum\": \"<string>\",\n    \"management_doc_version\": \"<string>\",\n    \"generate_version\": \"<string>\",\n    \"generate_output_tests\": \"<boolean>\",\n    \"generate_config_pre_raw\": \"<string>\",\n    \"generate_config_post_raw\": \"<string>\",\n    \"generate_config_pre_version\": \"<string>\",\n    \"generate_config_post_version\": \"<string>\",\n    \"generate_config_pre_checksum\": \"<string>\",\n    \"generate_config_post_checksum\": \"<string>\",\n    \"generate_eligible_features\": \"<string>\",\n    \"generate_gen_lock_pre_features\": \"<string>\",\n    \"generate_gen_lock_post_features\": \"<string>\",\n    \"generate_gen_lock_pre_doc_version\": \"<string>\",\n    \"generate_gen_lock_pre_doc_checksum\": \"<string>\",\n    \"generate_gen_lock_pre_version\": \"<string>\",\n    \"generate_gen_lock_pre_revision_digest\": \"<string>\",\n    \"generate_gen_lock_pre_blob_digest\": \"<string>\",\n    \"generate_gen_lock_pre_namespace_name\": \"<string>\",\n    \"generate_bump_type\": \"<string>\",\n    \"generate_number_of_operations_ignored\": \"<integer>\",\n    \"generate_number_of_operations_used\": \"<integer>\",\n    \"generate_number_of_terraform_resources\": \"<integer>\",\n    \"generate_published\": \"<boolean>\",\n    \"generate_repo_url\": \"<string>\",\n    \"publish_package_url\": \"<string>\",\n    \"publish_package_name\": \"<string>\",\n    \"publish_package_version\": \"<string>\",\n    \"publish_package_registry_name\": \"<string>\",\n    \"source_revision_digest\": \"<string>\",\n    \"source_blob_digest\": \"<string>\",\n    \"source_namespace_name\": \"<string>\",\n    \"lint_report_digest\": \"<string>\",\n    \"lint_report_error_count\": \"<integer>\",\n    \"lint_report_warning_count\": \"<integer>\",\n    \"lint_report_info_count\": \"<integer>\",\n    \"openapi_diff_report_digest\": \"<string>\",\n    \"openapi_diff_base_source_revision_digest\": \"<string>\",\n    \"openapi_diff_base_source_blob_digest\": \"<string>\",\n    \"openapi_diff_base_source_namespace_name\": \"<string>\",\n    \"openapi_diff_breaking_changes_count\": \"<integer>\",\n    \"openapi_diff_bump_type\": \"<string>\",\n    \"error\": \"<string>\",\n    \"mermaid_diagram\": \"<string>\",\n    \"last_step\": \"<string>\",\n    \"test_report_raw\": \"<string>\",\n    \"workflow_pre_raw\": \"<string>\",\n    \"workflow_post_raw\": \"<string>\",\n    \"workflow_lock_pre_raw\": \"<string>\",\n    \"workflow_lock_post_raw\": \"<string>\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e8e9dc9-d177-4656-b918-070a1a8cc357",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events",
+                    "targets",
+                    ":target_id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after_created_at",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "target_id",
+                      "description": "(Required) Filter to only return events corresponding to a particular gen_lock_id (gen_lock_id uniquely identifies a target)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 2623\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "65a8435f-a64c-4b36-b6c7-c5227cb2ab38",
+          "name": "get Workspace Targets",
+          "request": {
+            "name": "get Workspace Targets",
+            "description": {
+              "content": "Load targets for a particular workspace",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workspace",
+                "events",
+                "targets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after_last_event_created_at",
+                  "value": "<dateTime>",
+                  "description": "Filter to only return targets with events created after this timestamp"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "181c00ca-78e4-4160-a5a4-1dae3616a19e",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    "events",
+                    "targets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after_last_event_created_at",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"generate_target\": \"string\",\n    \"generate_gen_lock_id\": \"string\",\n    \"last_event_id\": \"string\",\n    \"last_event_created_at\": \"1966-03-20T09:42:52.592Z\",\n    \"last_event_interaction_type\": \"<string>\",\n    \"success\": true,\n    \"commit_head\": \"string\",\n    \"git_remote_default_owner\": \"string\",\n    \"git_remote_default_repo\": \"string\",\n    \"git_relative_cwd\": \"string\",\n    \"generate_target_name\": \"string\",\n    \"generate_target_version\": \"string\",\n    \"generate_config_post_version\": \"string\",\n    \"generate_gen_lock_pre_features\": \"string\",\n    \"generate_gen_lock_pre_version\": \"string\",\n    \"generate_eligible_features\": \"string\",\n    \"generate_number_of_operations_ignored\": 4820,\n    \"generate_number_of_operations_used\": 5978,\n    \"generate_number_of_terraform_resources\": 8523,\n    \"generate_published\": true,\n    \"continuous_integration_environment\": \"string\",\n    \"gh_action_ref\": \"string\",\n    \"gh_action_run_link\": \"string\",\n    \"gh_action_version\": \"string\",\n    \"gh_action_organization\": \"string\",\n    \"gh_action_repository\": \"string\",\n    \"repo_label\": \"string\",\n    \"hostname\": \"string\",\n    \"git_user_name\": \"string\",\n    \"git_user_email\": \"string\",\n    \"source_revision_digest\": \"string\",\n    \"source_blob_digest\": \"string\",\n    \"source_namespace_name\": \"string\",\n    \"error\": \"string\",\n    \"workflow_pre_raw\": \"string\",\n    \"workflow_post_raw\": \"string\",\n    \"workflow_lock_pre_raw\": \"string\",\n    \"workflow_lock_post_raw\": \"string\",\n    \"publish_package_url\": \"string\",\n    \"publish_package_name\": \"string\",\n    \"publish_package_version\": \"string\",\n    \"publish_package_registry_name\": \"string\",\n    \"last_publish_created_at\": \"1972-01-26T10:45:38.937Z\",\n    \"last_publish_gh_action_run_link\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a49a8bc0-8637-4f51-a08e-48cb9dc323f2",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    "events",
+                    "targets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after_last_event_created_at",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 2623\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37118203-94f2-4169-81be-3fd0227809e4",
+          "name": "get Workspace Targets Deprecated",
+          "request": {
+            "name": "get Workspace Targets Deprecated",
+            "description": {
+              "content": "Load targets for a particular workspace",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workspace",
+                ":workspace_id",
+                "events",
+                "targets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "after_last_event_created_at",
+                  "value": "<dateTime>",
+                  "description": "Filter to only return targets with events created after this timestamp"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace_id",
+                  "description": "(Required) Unique identifier of the workspace."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b02bb1f9-f035-475e-b1c2-93ad172a03ac",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events",
+                    "targets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after_last_event_created_at",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"string\",\n    \"generate_target\": \"string\",\n    \"generate_gen_lock_id\": \"string\",\n    \"last_event_id\": \"string\",\n    \"last_event_created_at\": \"1966-03-20T09:42:52.592Z\",\n    \"last_event_interaction_type\": \"<string>\",\n    \"success\": true,\n    \"commit_head\": \"string\",\n    \"git_remote_default_owner\": \"string\",\n    \"git_remote_default_repo\": \"string\",\n    \"git_relative_cwd\": \"string\",\n    \"generate_target_name\": \"string\",\n    \"generate_target_version\": \"string\",\n    \"generate_config_post_version\": \"string\",\n    \"generate_gen_lock_pre_features\": \"string\",\n    \"generate_gen_lock_pre_version\": \"string\",\n    \"generate_eligible_features\": \"string\",\n    \"generate_number_of_operations_ignored\": 4820,\n    \"generate_number_of_operations_used\": 5978,\n    \"generate_number_of_terraform_resources\": 8523,\n    \"generate_published\": true,\n    \"continuous_integration_environment\": \"string\",\n    \"gh_action_ref\": \"string\",\n    \"gh_action_run_link\": \"string\",\n    \"gh_action_version\": \"string\",\n    \"gh_action_organization\": \"string\",\n    \"gh_action_repository\": \"string\",\n    \"repo_label\": \"string\",\n    \"hostname\": \"string\",\n    \"git_user_name\": \"string\",\n    \"git_user_email\": \"string\",\n    \"source_revision_digest\": \"string\",\n    \"source_blob_digest\": \"string\",\n    \"source_namespace_name\": \"string\",\n    \"error\": \"string\",\n    \"workflow_pre_raw\": \"string\",\n    \"workflow_post_raw\": \"string\",\n    \"workflow_lock_pre_raw\": \"string\",\n    \"workflow_lock_post_raw\": \"string\",\n    \"publish_package_url\": \"string\",\n    \"publish_package_name\": \"string\",\n    \"publish_package_version\": \"string\",\n    \"publish_package_registry_name\": \"string\",\n    \"last_publish_created_at\": \"1972-01-26T10:45:38.937Z\",\n    \"last_publish_gh_action_run_link\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cb5a84d-55a9-4bad-8bc7-e387136ff137",
+              "name": "Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workspace",
+                    ":workspace_id",
+                    "events",
+                    "targets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "after_last_event_created_at",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace_id",
+                      "description": "(Required) Unique identifier of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\",\n  \"status_code\": 2623\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.prod.speakeasy.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "44720d75-5edc-4deb-a4d9-62e47f9978aa",
+    "name": "Speakeasy Artifacts Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Subscriptions API manages subscriptions for CLI and registry events",
+      "type": "text/plain"
+    }
+  }
+}

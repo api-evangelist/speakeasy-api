@@ -1,0 +1,317 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Workspaces API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get workspaces for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspaces"
+          },
+          "docs": "Returns a list of workspaces a user has access too"
+        },
+        {
+          "info": {
+            "name": "Get workspace by context",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace"
+          },
+          "docs": "Get information about a particular workspace by context."
+        },
+        {
+          "info": {
+            "name": "Create a workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/workspace",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a workspace"
+        },
+        {
+          "info": {
+            "name": "Get workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ]
+          },
+          "docs": "Get information about a particular workspace."
+        },
+        {
+          "info": {
+            "name": "Update workspace details",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/details",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update information about a particular workspace."
+        },
+        {
+          "info": {
+            "name": "Get workspace settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/settings",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ]
+          },
+          "docs": "Get settings about a particular workspace."
+        },
+        {
+          "info": {
+            "name": "Update workspace settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/settings",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update settings about a particular workspace."
+        },
+        {
+          "info": {
+            "name": "Get team members for a particular workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/team",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ]
+          },
+          "docs": "Get team members for a particular workspace"
+        },
+        {
+          "info": {
+            "name": "Grant a user access to a particular workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/team/email/:email",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "path",
+                "description": "Email of the user to grant access to."
+              }
+            ]
+          },
+          "docs": "Grant a user access to a particular workspace"
+        },
+        {
+          "info": {
+            "name": "Revoke a user's access to a particular workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/team/:userId",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the user."
+              }
+            ]
+          },
+          "docs": "Revoke a user's access to a particular workspace"
+        },
+        {
+          "info": {
+            "name": "Get tokens for a particular workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/tokens",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ]
+          },
+          "docs": "Get tokens for a particular workspace"
+        },
+        {
+          "info": {
+            "name": "Create a token for a particular workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/tokens",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a token for a particular workspace"
+        },
+        {
+          "info": {
+            "name": "Delete a token for a particular workspace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/tokens/:tokenID",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              },
+              {
+                "name": "tokenID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the token."
+              }
+            ]
+          },
+          "docs": "Delete a token for a particular workspace"
+        },
+        {
+          "info": {
+            "name": "Set workspace feature flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/feature_flags",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set workspace feature flags"
+        },
+        {
+          "info": {
+            "name": "Get workspace feature flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.prod.speakeasy.com/v1/workspace/:workspace_id/feature_flags",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the workspace."
+              }
+            ]
+          },
+          "docs": "Get workspace feature flags"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

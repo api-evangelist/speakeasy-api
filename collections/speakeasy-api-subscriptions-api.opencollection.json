@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Speakeasy Artifacts Subscriptions API",
+    "version": "0.4.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ignored a namespace for a subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/subscriptions/:subscriptionID/:namespaceName/ignore",
+            "params": [
+              {
+                "name": "subscriptionID",
+                "value": "",
+                "type": "path",
+                "description": "The existing subscription ID"
+              },
+              {
+                "name": "namespaceName",
+                "value": "",
+                "type": "path",
+                "description": "The namespace name"
+              }
+            ]
+          },
+          "docs": "Ignored a namespace for a subscription"
+        },
+        {
+          "info": {
+            "name": "Activate an ignored namespace for a subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.prod.speakeasy.com/v1/subscriptions/:subscriptionID/:namespaceName/activate",
+            "params": [
+              {
+                "name": "subscriptionID",
+                "value": "",
+                "type": "path",
+                "description": "The existing subscription ID"
+              },
+              {
+                "name": "namespaceName",
+                "value": "",
+                "type": "path",
+                "description": "The namespace name"
+              }
+            ]
+          },
+          "docs": "Activate an ignored namespace for a subscription"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
