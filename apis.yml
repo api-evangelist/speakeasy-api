@@ -71,6 +71,8 @@ apis:
   humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   baseURL: https://api.prod.speakeasy.com
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -119,6 +121,8 @@ apis:
   humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   baseURL: https://api.prod.speakeasy.com
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -143,6 +147,8 @@ apis:
   humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   baseURL: https://api.prod.speakeasy.com
   tags:
+  - GitHub
+  tags_raw:
   - Github
   properties:
   - type: OpenAPI
@@ -167,6 +173,8 @@ apis:
   humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   baseURL: https://api.prod.speakeasy.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -287,6 +295,8 @@ apis:
   humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   baseURL: https://api.prod.speakeasy.com
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
