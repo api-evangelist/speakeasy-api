@@ -159,7 +159,7 @@ apis:
   humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   baseURL: https://api.prod.speakeasy.com
   tags:
-  - Github
+  - GitHub
   tags_raw:
   - Github
   properties:
