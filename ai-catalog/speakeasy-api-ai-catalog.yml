@@ -53,6 +53,7 @@ conformance:
       media type. ARD permits extension types without core registration.'
     - '[Speakeasy AI Control Plane] Media type ''application/ai-plugin+json'' is a valid application extension
       media type. ARD permits extension types without core registration.'
+  did_web: null
 catalog:
   host_display_name: Speakeasy
   host_identifier: speakeasy.com
