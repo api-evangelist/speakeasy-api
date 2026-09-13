@@ -1,0 +1,136 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Speakeasy",
+    "identifier": "speakeasy.com",
+    "documentationUrl": "https://www.speakeasy.com/docs",
+    "logoUrl": "https://www.speakeasy.com/assets/og-images/og-speakeasy.png"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:speakeasy.com:mcp:platform",
+      "displayName": "Speakeasy Platform MCP",
+      "type": "application/mcp-server",
+      "url": "https://app.getgram.ai/platform-mcp",
+      "description": "MCP server for operating the Speakeasy AI Control Plane end to end: register and manage MCP servers, search the catalog, distribute servers and skills to teams, query MCP usage events, metrics, and traces, and search the platform docs with cited answers. OAuth 2.1 with automatic token refresh.",
+      "tags": [
+        "mcp",
+        "ai-control-plane",
+        "mcp-gateway",
+        "observability",
+        "administration"
+      ],
+      "capabilities": [
+        "search_mcp_catalog",
+        "register_remote_mcp",
+        "register_catalog_mcp",
+        "get_mcp_diagnostics",
+        "distribute_mcp_to_plugin",
+        "distribute_skill",
+        "query_mcp_events",
+        "query_mcp_metrics",
+        "query_mcp_traces",
+        "search_gram_docs"
+      ],
+      "representativeQueries": [
+        "Register this remote MCP server with my organization and distribute it to the engineering team",
+        "Why is my MCP server failing? Diagnose and repair it",
+        "Show MCP usage metrics and traces for the last week"
+      ],
+      "metadata": {
+        "setup": "https://www.speakeasy.com/agents.md",
+        "documentation": "https://www.speakeasy.com/docs/ai-control-plane",
+        "authentication": "OAuth 2.1 with automatic token refresh"
+      }
+    },
+    {
+      "identifier": "urn:air:speakeasy.com:setup:agents-md",
+      "displayName": "Speakeasy agent setup instructions",
+      "type": "text/markdown",
+      "url": "https://www.speakeasy.com/agents.md",
+      "description": "Validated per-agent install commands for the Speakeasy Platform MCP server and official skills, covering Claude Code, Codex, Cursor, Windsurf, OpenCode, GitHub Copilot, Claude Desktop, and Gemini CLI.",
+      "tags": [
+        "setup",
+        "mcp",
+        "skills",
+        "install"
+      ]
+    },
+    {
+      "identifier": "urn:air:speakeasy.com:mcp:docs-mcp",
+      "displayName": "Speakeasy Docs MCP",
+      "type": "application/mcp-server-card+json",
+      "url": "https://www.speakeasy.com/.well-known/mcp/server-card.json",
+      "description": "MCP server that turns Markdown documentation into a high-signal, agent-ready source. Agents search, retrieve, and cite first-party docs through standard MCP tools instead of guessing from training data or scraping HTML.",
+      "tags": [
+        "mcp",
+        "documentation",
+        "retrieval",
+        "rag",
+        "citation"
+      ],
+      "capabilities": [
+        "search_docs",
+        "get_doc",
+        "give_feedback"
+      ],
+      "representativeQueries": [
+        "How do I generate an MCP server from an OpenAPI spec with Speakeasy?",
+        "Search the Speakeasy docs for OAuth 2.1 configuration",
+        "What are the Speakeasy CLI commands for Terraform provider generation?"
+      ],
+      "metadata": {
+        "repository": "https://github.com/speakeasy-api/docs-mcp",
+        "product": "https://www.speakeasy.com/product/docs-mcp"
+      }
+    },
+    {
+      "identifier": "urn:air:speakeasy.com:api:platform",
+      "displayName": "Speakeasy Platform API",
+      "type": "application/openapi+yaml",
+      "url": "https://www.speakeasy.com/openapi.yaml",
+      "description": "Machine-readable OpenAPI description of the Speakeasy API for programmatic access to the AI control plane, SDK, and MCP generation platform.",
+      "tags": [
+        "api",
+        "openapi",
+        "rest"
+      ],
+      "metadata": {
+        "documentation": "https://www.speakeasy.com/docs",
+        "authentication": "https://www.speakeasy.com/.well-known/agent.json"
+      }
+    },
+    {
+      "identifier": "urn:air:speakeasy.com:skills:speakeasy-api",
+      "displayName": "Speakeasy Agent Skills",
+      "type": "application/ai-skill+md",
+      "url": "https://skills.sh/speakeasy-api",
+      "description": "Official Speakeasy skills for AI coding agents covering SDK, MCP server, Terraform provider, and CLI generation from an OpenAPI spec.",
+      "tags": [
+        "skills",
+        "sdk-generation",
+        "mcp",
+        "terraform",
+        "cli"
+      ]
+    },
+    {
+      "identifier": "urn:air:speakeasy.com:plugin:ai-control-plane",
+      "displayName": "Speakeasy AI Control Plane",
+      "type": "application/ai-plugin+json",
+      "url": "https://www.speakeasy.com/.well-known/ai-plugin.json",
+      "description": "The AI control plane for the AI-native enterprise. Connect, control, secure, and observe every AI agent (Claude, ChatGPT, Cursor, Copilot, Codex, internal agents) and the systems they reach.",
+      "tags": [
+        "ai-control-plane",
+        "ai-governance",
+        "mcp-gateway",
+        "observability"
+      ],
+      "representativeQueries": [
+        "How do I govern which MCP servers my team's AI agents can access?",
+        "How do I detect shadow AI and prompt injection across AI clients?",
+        "How do I add SSO and RBAC in front of an MCP server?"
+      ]
+    }
+  ]
+}
