@@ -277,30 +277,6 @@ apis:
     url: https://www.speakeasy.com/docs/sdks/create-client-sdks
   - type: Documentation
     url: https://www.speakeasy.com/docs/prep-openapi/linting
-- aid: speakeasy-api:speakeasy-api-shorturls-api
-  name: Speakeasy ShortURLs API
-  description: REST APIs for managing short URLs
-  humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
-  baseURL: https://api.prod.speakeasy.com
-  tags:
-  - ShortURLs
-  properties:
-  - type: OpenAPI
-    url: openapi/speakeasy-api-shorturls-api-openapi.yml
-  - type: Documentation
-    url: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
-  - type: APIReference
-    url: https://www.speakeasy.com/openapi.yaml
-  - type: PostmanCollection
-    url: collections/speakeasy-api.postman_collection.json
-  - type: OpenCollection
-    url: collections/speakeasy-api.opencollection.json
-  - type: Documentation
-    url: https://www.speakeasy.com/docs
-  - type: Documentation
-    url: https://www.speakeasy.com/docs/sdks/create-client-sdks
-  - type: Documentation
-    url: https://www.speakeasy.com/docs/prep-openapi/linting
 - aid: speakeasy-api:speakeasy-api-subscriptions-api
   name: Speakeasy Subscriptions API
   description: REST APIs for managing subscriptions
@@ -361,6 +337,30 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/speakeasy-api-workspaces-api-openapi.yml
+  - type: Documentation
+    url: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
+  - type: APIReference
+    url: https://www.speakeasy.com/openapi.yaml
+  - type: PostmanCollection
+    url: collections/speakeasy-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/speakeasy-api.opencollection.json
+  - type: Documentation
+    url: https://www.speakeasy.com/docs
+  - type: Documentation
+    url: https://www.speakeasy.com/docs/sdks/create-client-sdks
+  - type: Documentation
+    url: https://www.speakeasy.com/docs/prep-openapi/linting
+- aid: speakeasy-api:speakeasy-api-short-urls-api
+  name: Speakeasy Short URLs API
+  description: REST APIs for managing short URLs
+  humanURL: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
+  baseURL: https://api.prod.speakeasy.com
+  tags:
+  - Short URLs
+  properties:
+  - type: OpenAPI
+    url: openapi/speakeasy-api-short-urls-api-openapi.yml
   - type: Documentation
     url: https://www.speakeasy.com/guides/openapi/publish-specs-to-api-registry
   - type: APIReference
