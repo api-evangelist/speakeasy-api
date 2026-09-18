@@ -1,19 +1,7 @@
 {
   "provider": "speakeasy-api",
   "sources": [
-    "speakeasy-api-artifacts-api-openapi.yml",
-    "speakeasy-api-auth-api-openapi.yml",
-    "speakeasy-api-codesamples-api-openapi.yml",
-    "speakeasy-api-events-api-openapi.yml",
-    "speakeasy-api-github-api-openapi.yml",
-    "speakeasy-api-organizations-api-openapi.yml",
-    "speakeasy-api-publishingtokens-api-openapi.yml",
-    "speakeasy-api-reports-api-openapi.yml",
-    "speakeasy-api-schemastore-api-openapi.yml",
-    "speakeasy-api-shorturls-api-openapi.yml",
-    "speakeasy-api-subscriptions-api-openapi.yml",
-    "speakeasy-api-suggest-api-openapi.yml",
-    "speakeasy-api-workspaces-api-openapi.yml"
+    "_original/speakeasy-api-openapi.yaml"
   ],
   "outputs": [
     "speakeasy-api-artifacts-api-openapi.yml",
@@ -30,9 +18,32 @@
     "speakeasy-api-suggest-api-openapi.yml",
     "speakeasy-api-workspaces-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "speakeasy-api-openapi.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "speakeasy-api-openapi.yaml: declared missing tag: PublishingTokens",
+    "speakeasy-api-openapi.yaml: declared missing tag: SchemaStore",
+    "superseded outputs removed: speakeasy-api-short-urls-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 13 total)"
+  ],
+  "skipped": [
+    "speakeasy-api-artifacts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-codesamples-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-github-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-publishingtokens-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-schemastore-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-short-urls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-suggest-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "speakeasy-api-workspaces-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

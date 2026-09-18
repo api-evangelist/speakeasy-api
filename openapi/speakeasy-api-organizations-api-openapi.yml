@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
-  title: Speakeasy Artifacts Organizations API
+  title: Speakeasy Organizations API
   version: 0.4.0
 servers:
 - url: https://api.prod.speakeasy.com
@@ -178,6 +178,41 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    OrganizationUsageResponse:
+      description: A billing summary of organization usage
+      type: object
+      properties:
+        usage:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationUsage'
+        free_trial_expiry:
+          format: date-time
+          readOnly: true
+          type: string
+          description: Expiry date of the free trial, will be null if no trial
+        total_allowed_languages:
+          type: integer
+          description: Total number of allowed languages, -1 if unlimited
+        allowed_languages:
+          type: array
+          items:
+            type: string
+          description: List of allowed languages
+      required:
+      - usage
+      - total_allowed_languages
+      - allowed_languages
+    OrganizationBillingAddOnRequest:
+      description: A request to add billing add ons
+      type: object
+      properties:
+        add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAddOn'
+      required:
+      - add_ons
     BillingAddOn:
       type: string
       x-speakeasy-unknown-values: allow
@@ -186,6 +221,57 @@ components:
       - sdk_testing
       - custom_code_regions
       - snippet_ai
+    Organization:
+      description: A speakeasy organization
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        account_type:
+          $ref: '#/components/schemas/AccountType'
+        telemetry_disabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        free_trial_expiry:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        sso_connection_id:
+          type:
+          - string
+          - 'null'
+        sso_activated:
+          type: boolean
+        internal:
+          type: boolean
+      required:
+      - id
+      - name
+      - slug
+      - account_type
+      - telemetry_disabled
+      - sso_activated
+      - created_at
+      - updated_at
+      type: object
+    OrganizationBillingAddOnResponse:
+      description: Billing add on response
+      properties:
+        add_ons:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillingAddOn'
+      required:
+      - add_ons
     OrganizationUsage:
       type: object
       properties:
@@ -230,64 +316,6 @@ components:
       - accessible
       - workspaces
       - gen_lock_ids
-    OrganizationBillingAddOnRequest:
-      description: A request to add billing add ons
-      type: object
-      properties:
-        add_ons:
-          type: array
-          items:
-            $ref: '#/components/schemas/BillingAddOn'
-      required:
-      - add_ons
-    Organization:
-      description: A speakeasy organization
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        account_type:
-          $ref: '#/components/schemas/AccountType'
-        telemetry_disabled:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        free_trial_expiry:
-          type: string
-          format: date-time
-          nullable: true
-        sso_connection_id:
-          type: string
-          nullable: true
-        sso_activated:
-          type: boolean
-        internal:
-          type: boolean
-      required:
-      - id
-      - name
-      - slug
-      - account_type
-      - telemetry_disabled
-      - sso_activated
-      - created_at
-      - updated_at
-      type: object
-    AccountType:
-      type: string
-      x-speakeasy-unknown-values: allow
-      enum:
-      - free
-      - scale-up
-      - business
-      - enterprise
     Error:
       description: The `Status` type defines a logical error model
       properties:
@@ -302,40 +330,14 @@ components:
       - message
       - status_code
       type: object
-    OrganizationBillingAddOnResponse:
-      description: Billing add on response
-      properties:
-        add_ons:
-          type: array
-          items:
-            $ref: '#/components/schemas/BillingAddOn'
-      required:
-      - add_ons
-    OrganizationUsageResponse:
-      description: A billing summary of organization usage
-      type: object
-      properties:
-        usage:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrganizationUsage'
-        free_trial_expiry:
-          format: date-time
-          readOnly: true
-          type: string
-          description: Expiry date of the free trial, will be null if no trial
-        total_allowed_languages:
-          type: integer
-          description: Total number of allowed languages, -1 if unlimited
-        allowed_languages:
-          type: array
-          items:
-            type: string
-          description: List of allowed languages
-      required:
-      - usage
-      - total_allowed_languages
-      - allowed_languages
+    AccountType:
+      type: string
+      x-speakeasy-unknown-values: allow
+      enum:
+      - free
+      - scale-up
+      - business
+      - enterprise
   responses:
     default:
       content:

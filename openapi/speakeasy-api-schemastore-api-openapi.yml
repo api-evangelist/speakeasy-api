@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
-  title: Speakeasy Artifacts SchemaStore API
+  title: Speakeasy Schema Store API
   version: 0.4.0
 servers:
 - url: https://api.prod.speakeasy.com
@@ -80,6 +80,20 @@ paths:
           $ref: '#/components/responses/default'
 components:
   schemas:
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
     SchemaStoreItem:
       type: object
       properties:
@@ -106,20 +120,6 @@ components:
       - format
       - packageName
       - sdkClassname
-    Error:
-      description: The `Status` type defines a logical error model
-      properties:
-        message:
-          description: A developer-facing error message.
-          type: string
-        status_code:
-          description: The HTTP status code
-          format: int32
-          type: integer
-      required:
-      - message
-      - status_code
-      type: object
   responses:
     default:
       content:

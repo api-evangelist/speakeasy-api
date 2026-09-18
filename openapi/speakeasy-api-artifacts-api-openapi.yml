@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
   title: Speakeasy Artifacts API
@@ -34,7 +34,7 @@ paths:
           $ref: '#/components/responses/default'
   /v1/artifacts/namespaces:
     get:
-      summary: Each namespace contains many revisions.
+      summary: Each namespace contains many revisions
       operationId: getNamespaces
       tags:
       - Artifacts
@@ -100,6 +100,8 @@ paths:
                 $ref: '#/components/schemas/GetRevisionsResponse'
         4XX:
           $ref: '#/components/responses/default'
+      summary: Get revisions
+      x-summary-source: derived
   /v1/artifacts/namespaces/{namespace_name}/tags:
     get:
       operationId: getTags
@@ -120,6 +122,8 @@ paths:
                 $ref: '#/components/schemas/GetTagsResponse'
         4XX:
           $ref: '#/components/responses/default'
+      summary: Get tags
+      x-summary-source: derived
     post:
       summary: Add tags to an existing revision
       operationId: postTags
@@ -290,45 +294,66 @@ paths:
           $ref: '#/components/responses/default'
 components:
   schemas:
-    GetTagsResponse:
+    Namespace:
+      description: A namespace contains many revisions.
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-      required:
-      - items
-    RemoteSourceSubscriptionSettings:
-      properties:
-        base_spec_namespaces:
-          type: array
-          items:
-            type: string
-        overlay_namespaces:
-          type: array
-          items:
-            type: string
-        ignored_namespaces:
-          type: array
-          items:
-            type: string
-        output_namespace:
+        id:
           type: string
+          description: '{organization_slug}/{workspace_slug}/{namespace_name}'
+        name:
+          type: string
+          description: A human-readable name for the namespace.
+        created_at:
+          format: date-time
+          readOnly: true
+          type: string
+        updated_at:
+          format: date-time
+          readOnly: true
+          type: string
+        public:
+          readOnly: true
+          type: boolean
+          description: Indicates whether the namespace is publicly accessible
+        archived_at:
+          format: date-time
+          readOnly: true
+          type: string
+        latest_revision_metadata:
+          $ref: '#/components/schemas/RevisionContentsMetadata'
+        composite_spec_metadata:
+          type: object
+          properties:
+            subscription_id:
+              type: string
+              readOnly: true
+              description: The subscription ID for the remote source subscription, if applicable. This indicates that the namespace is created by a remote source and thus is composite.
+            subscription_settings:
+              $ref: '#/components/schemas/RemoteSourceSubscriptionSettings'
+          required:
+          - subscription_id
+          - subscription_settings
       required:
-      - base_spec_namespaces
-      - overlay_namespaces
-      - output_namespace
-    GetRevisionsResponse:
+      - id
+      - name
+      - created_at
+      - updated_at
+    RemoteSource:
+      description: Remote source configuration
       properties:
-        items:
+        inputs:
           type: array
           items:
-            $ref: '#/components/schemas/Revision'
-        next_page_token:
-          type: string
+            $ref: '#/components/schemas/RemoteDocument'
+        overlays:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteDocument'
+        output:
+          $ref: '#/components/schemas/RemoteDocument'
       required:
-      - items
-      - next_page_token
+      - inputs
+      - output
     AddTags:
       description: Request body of tags to add to a revision
       properties:
@@ -443,91 +468,6 @@ components:
           type: string
       required:
       - access_token
-    RemoteDocument:
-      description: A document hosted in the registry
-      properties:
-        registry_url:
-          type: string
-      required:
-      - registry_url
-    RemoteSource:
-      description: Remote source configuration
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteDocument'
-        overlays:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteDocument'
-        output:
-          $ref: '#/components/schemas/RemoteDocument'
-      required:
-      - inputs
-      - output
-    Tag:
-      properties:
-        id:
-          type: string
-          description: Format {namespace_id}/{tag}
-        name:
-          type: string
-          description: Human readable tag name
-        namespace_name:
-          type: string
-        revision_digest:
-          type: string
-      required:
-      - id
-      - name
-      - namespace_name
-      - revision_digest
-    V2Descriptor:
-      description: V2 descriptor
-      properties:
-        digest:
-          description: Digest
-          type: string
-        mediaType:
-          description: Media type
-          type: string
-        size:
-          description: Size
-          type: integer
-        annotations:
-          $ref: '#/components/schemas/Annotations'
-    Revision:
-      properties:
-        id:
-          type: string
-          description: Format {namespace_id}/{revision_digest}
-        digest:
-          type: string
-          example: sha256:6d1ef012b5674ad8a127ecfa9b5e6f5178d171b90ee462846974177fd9bdd39f
-        namespace_name:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-        contents_metadata:
-          $ref: '#/components/schemas/RevisionContentsMetadata'
-        created_at:
-          format: date-time
-          readOnly: true
-          type: string
-        updated_at:
-          format: date-time
-          readOnly: true
-          type: string
-      required:
-      - id
-      - namespace_name
-      - digest
-      - tags
-      - created_at
-      - updated_at
     Annotations:
       description: Annotations
       properties:
@@ -566,15 +506,42 @@ components:
         org.opencontainers.image.description:
           type: string
           description: Human-readable description of the software packaged in the image
-    Namespace:
-      description: A namespace contains many revisions.
+    RemoteSourceSubscriptionSettings:
+      properties:
+        base_spec_namespaces:
+          type: array
+          items:
+            type: string
+        overlay_namespaces:
+          type: array
+          items:
+            type: string
+        ignored_namespaces:
+          type: array
+          items:
+            type: string
+        output_namespace:
+          type: string
+      required:
+      - base_spec_namespaces
+      - overlay_namespaces
+      - output_namespace
+    Revision:
       properties:
         id:
           type: string
-          description: '{organization_slug}/{workspace_slug}/{namespace_name}'
-        name:
+          description: Format {namespace_id}/{revision_digest}
+        digest:
           type: string
-          description: A human-readable name for the namespace.
+          example: sha256:6d1ef012b5674ad8a127ecfa9b5e6f5178d171b90ee462846974177fd9bdd39f
+        namespace_name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        contents_metadata:
+          $ref: '#/components/schemas/RevisionContentsMetadata'
         created_at:
           format: date-time
           readOnly: true
@@ -583,33 +550,64 @@ components:
           format: date-time
           readOnly: true
           type: string
-        public:
-          readOnly: true
-          type: boolean
-          description: Indicates whether the namespace is publicly accessible
-        archived_at:
-          format: date-time
-          readOnly: true
+      required:
+      - id
+      - namespace_name
+      - digest
+      - tags
+      - created_at
+      - updated_at
+    GetTagsResponse:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+      required:
+      - items
+    GetNamespacesResponse:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Namespace'
+      required:
+      - items
+    GetRevisionsResponse:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Revision'
+        next_page_token:
           type: string
-        latest_revision_metadata:
-          $ref: '#/components/schemas/RevisionContentsMetadata'
-        composite_spec_metadata:
-          type: object
-          properties:
-            subscription_id:
-              type: string
-              readOnly: true
-              description: The subscription ID for the remote source subscription, if applicable. This indicates that the namespace is created by a remote source and thus is composite.
-            subscription_settings:
-              $ref: '#/components/schemas/RemoteSourceSubscriptionSettings'
-          required:
-          - subscription_id
-          - subscription_settings
+      required:
+      - items
+      - next_page_token
+    Tag:
+      properties:
+        id:
+          type: string
+          description: Format {namespace_id}/{tag}
+        name:
+          type: string
+          description: Human readable tag name
+        namespace_name:
+          type: string
+        revision_digest:
+          type: string
       required:
       - id
       - name
-      - created_at
-      - updated_at
+      - namespace_name
+      - revision_digest
+    RemoteDocument:
+      description: A document hosted in the registry
+      properties:
+        registry_url:
+          type: string
+      required:
+      - registry_url
     Error:
       description: The `Status` type defines a logical error model
       properties:
@@ -624,14 +622,27 @@ components:
       - message
       - status_code
       type: object
-    GetNamespacesResponse:
+    V2Descriptor:
+      description: V2 descriptor
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Namespace'
-      required:
-      - items
+        digest:
+          description: Digest
+          type: string
+        mediaType:
+          description: Media type
+          type: string
+        size:
+          description: Size
+          type: integer
+        annotations:
+          $ref: '#/components/schemas/Annotations'
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
   requestBodies:
     PreflightRequest:
       content:
@@ -643,13 +654,6 @@ components:
                 type: string
             required:
             - namespace_name
-  responses:
-    default:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Default error response
   securitySchemes:
     APIKey:
       description: The API Key for the workspace

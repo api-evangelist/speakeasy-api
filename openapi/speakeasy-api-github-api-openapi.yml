@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
-  title: Speakeasy Artifacts Github API
+  title: Speakeasy Github API
   version: 0.4.0
 servers:
 - url: https://api.prod.speakeasy.com
@@ -45,6 +45,8 @@ paths:
           description: github setup state response
         4XX:
           $ref: '#/components/responses/default'
+      summary: Get github setup state
+      x-summary-source: derived
   /v1/github/check_access:
     get:
       operationId: checkGithubAccess
@@ -67,6 +69,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Check github access
+      x-summary-source: derived
   /v1/github/link:
     post:
       operationId: linkGithubAccess
@@ -94,6 +98,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Link github access
+      x-summary-source: derived
   /v1/github/publishing_prs:
     get:
       operationId: githubCheckPublishingPRs
@@ -126,6 +132,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github check publishing PRs
+      x-summary-source: derived
   /v1/github/publishing_secrets:
     get:
       operationId: githubCheckPublishingSecrets
@@ -148,6 +156,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github check publishing secrets
+      x-summary-source: derived
     post:
       operationId: githubStorePublishingSecrets
       x-speakeasy-name-override: storePublishingSecrets
@@ -164,6 +174,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github store publishing secrets
+      x-summary-source: derived
   /v1/github/configure_code_samples:
     post:
       operationId: githubConfigureCodeSamples
@@ -185,6 +197,8 @@ paths:
                 $ref: '#/components/schemas/GithubConfigureCodeSamplesResponse'
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github configure code samples
+      x-summary-source: derived
   /v1/github/configure_mintlify_repo:
     post:
       operationId: githubConfigureMintlifyRepo
@@ -202,6 +216,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github configure mintlify repo
+      x-summary-source: derived
   /v1/github/configure_target:
     post:
       operationId: githubConfigureTarget
@@ -219,6 +235,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github configure target
+      x-summary-source: derived
   /v1/github/trigger_action:
     post:
       operationId: githubTriggerAction
@@ -236,6 +254,8 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Github trigger action
+      x-summary-source: derived
   /v1/github/action:
     get:
       operationId: getGitHubAction
@@ -268,55 +288,27 @@ paths:
           description: OK
         4XX:
           $ref: '#/components/responses/default'
+      summary: Get git hub action
+      x-summary-source: derived
 components:
   schemas:
-    GithubConfigureCodeSamplesRequest:
-      description: A request to configure GitHub code samples
-      type: object
+    WorkflowDocument:
+      description: A document referenced by a workflow
       properties:
-        org:
+        location:
           type: string
-          description: The GitHub organization name
-        repo:
-          type: string
-          description: The GitHub repository name
-        targetName:
-          type: string
-          description: The target name for the code samples
-      required:
-      - org
-      - repo
-      - targetName
-    GithubSetupStateResponse:
-      description: The state of a particular SDK targets github setup
-      type: object
-      properties:
-        app_installed:
-          type: boolean
-        actions:
+        auth:
           type: object
           properties:
-            generation_action_configured:
-              type: boolean
-            publish_action_configured:
-              type: boolean
+            header:
+              type: string
+            secret:
+              type: string
           required:
-          - generation_action_configured
-          - publish_action_configured
-        secrets:
-          type: object
-          properties:
-            api_key_configured:
-              type: boolean
-            publishing_secrets_configured:
-              type: boolean
-          required:
-          - api_key_configured
-          - publishing_secrets_configured
+          - header
+          - secret
       required:
-      - app_installed
-      - actions
-      - secrets
+      - location
     GithubTriggerActionRequest:
       description: A request to trigger an action on a GitHub target
       type: object
@@ -343,6 +335,87 @@ components:
       - org
       - repo_name
       - gen_lock_id
+    GithubConfigureCodeSamplesResponse:
+      description: A response to configure GitHub code samples
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/WorkflowDocument'
+        codeSampleOverlayRegistryURL:
+          type: string
+          description: The URL of the code sample overlay registry
+        ghActionID:
+          type: string
+          description: The ID of the GitHub action that was dispatched
+      required:
+      - source
+      - codeSampleOverlayRegistryURL
+    GithubConfigureCodeSamplesRequest:
+      description: A request to configure GitHub code samples
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo:
+          type: string
+          description: The GitHub repository name
+        targetName:
+          type: string
+          description: The target name for the code samples
+      required:
+      - org
+      - repo
+      - targetName
+    GithubGetActionResponse:
+      description: response to a getting the latest action run on a GitHub request
+      type: object
+      properties:
+        run_url:
+          type: string
+          description: The URL for latest action run if available
+        run_status:
+          type: string
+          description: The status of the latest action run if available
+    GithubConfigureTargetRequest:
+      description: A request to configure a GitHub target
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo_name:
+          type: string
+          description: The GitHub repository name
+      required:
+      - org
+      - repo_name
+    GithubConfigureMintlifyRepoRequest:
+      description: A request to configure a GitHub repository for mintlify
+      type: object
+      properties:
+        org:
+          type: string
+          description: The GitHub organization name
+        repo:
+          type: string
+          description: The GitHub repository name
+        subdirectory:
+          type: string
+          description: The subdirectory (location of mint.json)
+        input:
+          type: string
+          description: The input OpenAPI document
+        overlays:
+          type: array
+          description: The overlays to apply
+          items:
+            type: string
+      required:
+      - org
+      - repo
+      - input
+      - overlays
     GithubPublishingPRResponse:
       description: Open generation PRs pending publishing
       type: object
@@ -395,64 +468,6 @@ components:
             type: string
       required:
       - generate_gen_lock_id
-    GithubConfigureMintlifyRepoRequest:
-      description: A request to configure a GitHub repository for mintlify
-      type: object
-      properties:
-        org:
-          type: string
-          description: The GitHub organization name
-        repo:
-          type: string
-          description: The GitHub repository name
-        subdirectory:
-          type: string
-          description: The subdirectory (location of mint.json)
-        input:
-          type: string
-          description: The input OpenAPI document
-        overlays:
-          type: array
-          description: The overlays to apply
-          items:
-            type: string
-      required:
-      - org
-      - repo
-      - input
-      - overlays
-    GithubConfigureCodeSamplesResponse:
-      description: A response to configure GitHub code samples
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/WorkflowDocument'
-        codeSampleOverlayRegistryURL:
-          type: string
-          description: The URL of the code sample overlay registry
-        ghActionID:
-          type: string
-          description: The ID of the GitHub action that was dispatched
-      required:
-      - source
-      - codeSampleOverlayRegistryURL
-    WorkflowDocument:
-      description: A document referenced by a workflow
-      properties:
-        location:
-          type: string
-        auth:
-          type: object
-          properties:
-            header:
-              type: string
-            secret:
-              type: string
-          required:
-          - header
-          - secret
-      required:
-      - location
     GithubMissingPublishingSecretsResponse:
       description: A valid response containing MISSING publishing secret keys for a github target
       type: object
@@ -461,29 +476,36 @@ components:
           type: array
           items:
             type: string
-    GithubConfigureTargetRequest:
-      description: A request to configure a GitHub target
+    GithubSetupStateResponse:
+      description: The state of a particular SDK targets github setup
       type: object
       properties:
-        org:
-          type: string
-          description: The GitHub organization name
-        repo_name:
-          type: string
-          description: The GitHub repository name
+        app_installed:
+          type: boolean
+        actions:
+          type: object
+          properties:
+            generation_action_configured:
+              type: boolean
+            publish_action_configured:
+              type: boolean
+          required:
+          - generation_action_configured
+          - publish_action_configured
+        secrets:
+          type: object
+          properties:
+            api_key_configured:
+              type: boolean
+            publishing_secrets_configured:
+              type: boolean
+          required:
+          - api_key_configured
+          - publishing_secrets_configured
       required:
-      - org
-      - repo_name
-    GithubGetActionResponse:
-      description: response to a getting the latest action run on a GitHub request
-      type: object
-      properties:
-        run_url:
-          type: string
-          description: The URL for latest action run if available
-        run_status:
-          type: string
-          description: The status of the latest action run if available
+      - app_installed
+      - actions
+      - secrets
     Error:
       description: The `Status` type defines a logical error model
       properties:

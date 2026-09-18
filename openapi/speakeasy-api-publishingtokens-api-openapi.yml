@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
-  title: Speakeasy Artifacts PublishingTokens API
+  title: Speakeasy Publishing Tokens API
   version: 0.4.0
 servers:
 - url: https://api.prod.speakeasy.com
@@ -209,6 +209,20 @@ paths:
       x-speakeasy-name-override: resolveMetadata
 components:
   schemas:
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
     PublishingToken:
       description: A token used to publish to a target
       properties:
@@ -251,20 +265,6 @@ components:
       - created_by
       - organization_id
       - workspace_id
-    Error:
-      description: The `Status` type defines a logical error model
-      properties:
-        message:
-          description: A developer-facing error message.
-          type: string
-        status_code:
-          description: The HTTP status code
-          format: int32
-          type: integer
-      required:
-      - message
-      - status_code
-      type: object
   responses:
     default:
       content:

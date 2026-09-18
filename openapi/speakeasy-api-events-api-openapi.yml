@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
-  title: Speakeasy Artifacts Events API
+  title: Speakeasy Events API
   version: 0.4.0
 servers:
 - url: https://api.prod.speakeasy.com
@@ -91,6 +91,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      summary: Search workspace events
+      x-summary-source: derived
     post:
       summary: Post events for a specific workspace
       description: Sends an array of events to be stored for a particular workspace.
@@ -168,6 +170,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      summary: Get workspace events by target
+      x-summary-source: derived
   /v1/workspace/events/targets:
     parameters:
     - name: after_last_event_created_at
@@ -197,6 +201,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      summary: Get workspace targets
+      x-summary-source: derived
   /v1/workspace/{workspace_id}/events/targets:
     parameters:
     - name: workspace_id
@@ -232,8 +238,173 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      summary: Get workspace targets deprecated
+      x-summary-source: derived
 components:
   schemas:
+    InteractionType:
+      type: string
+      description: Type of interaction.
+      enum:
+      - CI_EXEC
+      - CLI_EXEC
+      - LINT
+      - OPENAPI_DIFF
+      - TARGET_GENERATE
+      - TOMBSTONE
+      - AUTHENTICATE
+      - QUICKSTART
+      - RUN
+      - CONFIGURE
+      - PUBLISH
+      - TEST
+    TargetSDK:
+      type: object
+      required:
+      - id
+      - generate_target
+      - generate_gen_lock_id
+      - last_event_id
+      - last_event_created_at
+      - last_event_interaction_type
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the target the same as `generate_gen_lock_id`
+        last_event_id:
+          type: string
+          description: Unique identifier of the last event for the target
+        last_event_created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event was created in the database.
+        last_event_interaction_type:
+          $ref: '#/components/schemas/InteractionType'
+          description: Type of interaction.
+        success:
+          type: boolean
+          description: Indicates whether the event was successful.
+        commit_head:
+          type: string
+          description: Remote commit ID.
+        git_remote_default_owner:
+          type: string
+          description: Default owner for git remote.
+        git_remote_default_repo:
+          type: string
+          description: Default repository name for git remote.
+        git_relative_cwd:
+          type: string
+          description: Current working directory relative to the git root.
+        generate_target:
+          type: string
+          description: eg `typescript`, `terraform`, `python`
+        generate_target_name:
+          type: string
+          description: The workflow name of the target.
+        generate_gen_lock_id:
+          type: string
+          description: gen.lock ID (expected to be a uuid). The same as `id`. A unique identifier for the target.
+        generate_target_version:
+          type: string
+          description: The version of the Speakeasy generator for this target eg v2 of the typescript generator.
+        generate_config_post_version:
+          type: string
+          description: Version of the generated target (post generation)
+        generate_gen_lock_pre_features:
+          type: string
+          description: Features prior to generation
+        generate_gen_lock_pre_version:
+          type: string
+          description: Artifact version for the Previous Generation
+        generate_eligible_features:
+          type: string
+          description: Eligible feature set during generation
+        generate_number_of_operations_ignored:
+          type: integer
+          description: The number of operations ignored in generation.
+        generate_number_of_operations_used:
+          type: integer
+          description: The number of operations used in generation.
+        generate_number_of_terraform_resources:
+          type: integer
+          description: The number of terraform resources used in generation.
+        generate_published:
+          type: boolean
+          description: Indicates whether the target was considered published.
+        continuous_integration_environment:
+          type: string
+          description: Name of the CI environment.
+        gh_action_ref:
+          type: string
+          description: GitHub Action ref value.
+        gh_action_run_link:
+          type: string
+          description: Link to the GitHub action run.
+        gh_action_version:
+          type: string
+          description: Version of the GitHub action.
+        gh_action_organization:
+          type: string
+          description: GitHub organization of the action.
+        gh_action_repository:
+          type: string
+          description: GitHub repository of the action.
+        repo_label:
+          type: string
+          description: Label of the git repository.
+        hostname:
+          type: string
+          description: Remote hostname.
+        git_user_name:
+          type: string
+          description: User's name from git configuration. (not GitHub username)
+        git_user_email:
+          type: string
+          description: User email from git configuration.
+        source_revision_digest:
+          type: string
+          description: The revision digest of the source.
+        source_blob_digest:
+          type: string
+          description: The blob digest of the source.
+        source_namespace_name:
+          type: string
+          description: The namespace name of the source.
+        error:
+          type: string
+          description: Error message if the last event was not successful.
+        workflow_pre_raw:
+          type: string
+          description: Workflow file (prior to execution)
+        workflow_post_raw:
+          type: string
+          description: Workflow file (post execution)
+        workflow_lock_pre_raw:
+          type: string
+          description: Workflow lock file (prior to execution)
+        workflow_lock_post_raw:
+          type: string
+          description: Workflow lock file (post execution)
+        publish_package_url:
+          type: string
+          description: URL of the published package.
+        publish_package_name:
+          type: string
+          description: Name of the published package.
+        publish_package_version:
+          type: string
+          description: Version of the published package.
+        publish_package_registry_name:
+          type: string
+          description: Name of the registry where the package was published.
+        last_publish_created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the last publishing event was created.
+        last_publish_gh_action_run_link:
+          type: string
+          description: Link to the GitHub action run for the last publishing event.
     CliEvent:
       type: object
       required:
@@ -509,174 +680,11 @@ components:
         workflow_lock_post_raw:
           type: string
           description: Workflow lock file (post execution)
-    InteractionType:
-      type: string
-      description: Type of interaction.
-      enum:
-      - CI_EXEC
-      - CLI_EXEC
-      - LINT
-      - OPENAPI_DIFF
-      - TARGET_GENERATE
-      - TOMBSTONE
-      - AUTHENTICATE
-      - QUICKSTART
-      - RUN
-      - CONFIGURE
-      - PUBLISH
-      - TEST
     CliEventBatch:
       type: array
       items:
         $ref: '#/components/schemas/CliEvent'
       minItems: 1
-    TargetSDK:
-      type: object
-      required:
-      - id
-      - generate_target
-      - generate_gen_lock_id
-      - last_event_id
-      - last_event_created_at
-      - last_event_interaction_type
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the target the same as `generate_gen_lock_id`
-        last_event_id:
-          type: string
-          description: Unique identifier of the last event for the target
-        last_event_created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the event was created in the database.
-        last_event_interaction_type:
-          $ref: '#/components/schemas/InteractionType'
-          description: Type of interaction.
-        success:
-          type: boolean
-          description: Indicates whether the event was successful.
-        commit_head:
-          type: string
-          description: Remote commit ID.
-        git_remote_default_owner:
-          type: string
-          description: Default owner for git remote.
-        git_remote_default_repo:
-          type: string
-          description: Default repository name for git remote.
-        git_relative_cwd:
-          type: string
-          description: Current working directory relative to the git root.
-        generate_target:
-          type: string
-          description: eg `typescript`, `terraform`, `python`
-        generate_target_name:
-          type: string
-          description: The workflow name of the target.
-        generate_gen_lock_id:
-          type: string
-          description: gen.lock ID (expected to be a uuid). The same as `id`. A unique identifier for the target.
-        generate_target_version:
-          type: string
-          description: The version of the Speakeasy generator for this target eg v2 of the typescript generator.
-        generate_config_post_version:
-          type: string
-          description: Version of the generated target (post generation)
-        generate_gen_lock_pre_features:
-          type: string
-          description: Features prior to generation
-        generate_gen_lock_pre_version:
-          type: string
-          description: Artifact version for the Previous Generation
-        generate_eligible_features:
-          type: string
-          description: Eligible feature set during generation
-        generate_number_of_operations_ignored:
-          type: integer
-          description: The number of operations ignored in generation.
-        generate_number_of_operations_used:
-          type: integer
-          description: The number of operations used in generation.
-        generate_number_of_terraform_resources:
-          type: integer
-          description: The number of terraform resources used in generation.
-        generate_published:
-          type: boolean
-          description: Indicates whether the target was considered published.
-        continuous_integration_environment:
-          type: string
-          description: Name of the CI environment.
-        gh_action_ref:
-          type: string
-          description: GitHub Action ref value.
-        gh_action_run_link:
-          type: string
-          description: Link to the GitHub action run.
-        gh_action_version:
-          type: string
-          description: Version of the GitHub action.
-        gh_action_organization:
-          type: string
-          description: GitHub organization of the action.
-        gh_action_repository:
-          type: string
-          description: GitHub repository of the action.
-        repo_label:
-          type: string
-          description: Label of the git repository.
-        hostname:
-          type: string
-          description: Remote hostname.
-        git_user_name:
-          type: string
-          description: User's name from git configuration. (not GitHub username)
-        git_user_email:
-          type: string
-          description: User email from git configuration.
-        source_revision_digest:
-          type: string
-          description: The revision digest of the source.
-        source_blob_digest:
-          type: string
-          description: The blob digest of the source.
-        source_namespace_name:
-          type: string
-          description: The namespace name of the source.
-        error:
-          type: string
-          description: Error message if the last event was not successful.
-        workflow_pre_raw:
-          type: string
-          description: Workflow file (prior to execution)
-        workflow_post_raw:
-          type: string
-          description: Workflow file (post execution)
-        workflow_lock_pre_raw:
-          type: string
-          description: Workflow lock file (prior to execution)
-        workflow_lock_post_raw:
-          type: string
-          description: Workflow lock file (post execution)
-        publish_package_url:
-          type: string
-          description: URL of the published package.
-        publish_package_name:
-          type: string
-          description: Name of the published package.
-        publish_package_version:
-          type: string
-          description: Version of the published package.
-        publish_package_registry_name:
-          type: string
-          description: Name of the registry where the package was published.
-        last_publish_created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the last publishing event was created.
-        last_publish_gh_action_run_link:
-          type: string
-          description: Link to the GitHub action run for the last publishing event.
     Error:
       description: The `Status` type defines a logical error model
       properties:

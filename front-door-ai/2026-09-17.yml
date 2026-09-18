@@ -1,0 +1,34 @@
+# Front Door AI Index — speakeasy-api — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: speakeasy-api
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.speakeasy.com
+  final_host: www.speakeasy.com
+  ownership: shared
+  owner: speakeasy
+  shares_host_with:
+  - speakeasy
+  inherited_from: null
+  verdict: scored
+  score: null
+  host_score: 85
+  density: null
+  words: 1647
+  tiers:
+    agentic: 34
+    core: 47
+    model: 4
+  ambiguous: 34
+  top_terms:
+    AI: 47
+    agent: 34
+    MCP: 17
+    AI agent: 9
+    prompts: 6
+    ChatGPT: 2
+    Claude: 2
+    copilot: 1
+    model context protocol: 1

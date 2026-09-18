@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   description: The Subscriptions API manages subscriptions for CLI and registry events
-  title: Speakeasy Artifacts CodeSamples API
+  title: Speakeasy Code Samples API
   version: 0.4.0
 servers:
 - url: https://api.prod.speakeasy.com
@@ -83,7 +83,7 @@ paths:
           $ref: '#/components/responses/default'
   /v1/code_sample/preview:
     post:
-      summary: Generate Code Sample previews from a file and configuration parameters.
+      summary: Generate Code Sample previews from a file and configuration parameters
       description: This endpoint generates Code Sample previews from a file and configuration parameters.
       operationId: generateCodeSamplePreview
       tags:
@@ -118,7 +118,7 @@ paths:
                 $ref: '#/components/schemas/Error'
   /v1/code_sample/preview/async:
     post:
-      summary: Initiate asynchronous Code Sample preview generation from a file and configuration parameters, receiving an async JobID response for polling.
+      summary: Initiate asynchronous Code Sample preview generation from a file and…
       description: This endpoint generates Code Sample previews from a file and configuration parameters, receiving an async JobID response for polling.
       operationId: generateCodeSamplePreviewAsync
       tags:
@@ -159,7 +159,7 @@ paths:
                 $ref: '#/components/schemas/Error'
   /v1/code_sample/preview/async/{jobID}:
     get:
-      summary: Poll for the result of an asynchronous Code Sample preview generation.
+      summary: Poll for the result of an asynchronous Code Sample preview generation
       description: Poll for the result of an asynchronous Code Sample preview generation.
       operationId: getCodeSamplePreviewAsync
       tags:
@@ -206,69 +206,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    UsageSnippet:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The path of the operation
-        method:
-          description: The HTTP method of the operation
-        operationId:
-          type: string
-          description: The operation ID for the snippet
-        language:
-          type: string
-          description: The language of the snippet
-        code:
-          type: string
-          description: The code snippet
-      required:
-      - path
-      - method
-      - operationId
-      - language
-      - code
-    HttpMethod:
-      type: string
-      enum:
-      - get
-      - post
-      - put
-      - patch
-      - delete
-      - head
-      - options
-      - trace
-    CodeSamplesJobStatus:
-      type: string
-      enum:
-      - pending
-      - running
-      description: The current status of the job. Possible values are `pending` or `running`.
-    UsageSnippets:
-      type: object
-      properties:
-        snippets:
-          type: array
-          items:
-            $ref: '#/components/schemas/UsageSnippet'
-      required:
-      - snippets
-    Error:
-      description: The `Status` type defines a logical error model
-      properties:
-        message:
-          description: A developer-facing error message.
-          type: string
-        status_code:
-          description: The HTTP status code
-          format: int32
-          type: integer
-      required:
-      - message
-      - status_code
-      type: object
     CodeSampleSchemaInput:
       type: object
       required:
@@ -293,6 +230,76 @@ components:
           type: string
           format: binary
           description: The OpenAPI file to be uploaded
+    HttpMethod:
+      type: string
+      enum:
+      - get
+      - post
+      - put
+      - patch
+      - delete
+      - head
+      - options
+      - trace
+    UsageSnippets:
+      type: object
+      properties:
+        snippets:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsageSnippet'
+      required:
+      - snippets
+    Error:
+      description: The `Status` type defines a logical error model
+      properties:
+        message:
+          description: A developer-facing error message.
+          type: string
+        status_code:
+          description: The HTTP status code
+          format: int32
+          type: integer
+      required:
+      - message
+      - status_code
+      type: object
+    CodeSamplesJobStatus:
+      type: string
+      enum:
+      - pending
+      - running
+      description: The current status of the job. Possible values are `pending` or `running`.
+    UsageSnippet:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path of the operation
+        method:
+          description: The HTTP method of the operation
+        operationId:
+          type: string
+          description: The operation ID for the snippet
+        language:
+          type: string
+          description: The language of the snippet
+        code:
+          type: string
+          description: The code snippet
+      required:
+      - path
+      - method
+      - operationId
+      - language
+      - code
+  responses:
+    default:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Default error response
   examples:
     UsageSnippets:
       summary: Array of usage snippets
@@ -303,13 +310,6 @@ components:
           method: get
           language: typescript
           code: "import { Petstore } from \"petstore-sdk\";\n\nconst petstore = new Petstore({\n  apiKey: \"<YOUR_API_KEY_HERE>\",\n});\n\nasync function run() {\n  const result = await petstore.pet.getById({\n    id: 137396,\n  });\n\n  // Handle the result\n  console.log(result);\n}\n\nrun();"
-  responses:
-    default:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-      description: Default error response
   securitySchemes:
     APIKey:
       description: The API Key for the workspace
